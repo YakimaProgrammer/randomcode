@@ -32,48 +32,49 @@ st.pencolor("yellow")
 st.hideturtle()
 st.pensize(5)
 st.setheading(-90)
-#first NPC turtle
-npc1 = tr.Turtle()
-npc1.penup()
-npc1.hideturtle()
-npc1.color("red")
-npc1.goto(-20, 180)
-npc1.speed("fastest")
-#second NPC turtle
-npc2 = tr.Turtle()
-npc2.penup()
-npc2.hideturtle()
-npc2.color("blue")
-npc2.goto(-50, 180)
-npc2.speed("fastest")
-#second NPC turtle
-npc3 = tr.Turtle()
-npc3.penup()
-npc3.hideturtle()
-npc3.color("orange")
-npc3.goto(-20, 150)
-npc3.speed("fastest")
-#second NPC turtle
-npc4 = tr.Turtle()
-npc4.penup()
-npc4.hideturtle()
-npc4.color("green")
-npc4.goto(-50, 150)
-npc4.speed("fastest")
-#player turtle
-player = tr.Turtle()
+
+def newNPC(color, x, y, speed):
+  t = tr.Turtle()
+  t.penup()
+  t.hideturtle()
+  if color: t.color(color)
+  t.goto(x, y)
+  if speed: t.speed(speed)
+  return t
+
+class NPC_tracker:
+    def __init__(self, turtles):
+        self.turtles = turtles
+
+    def forward(self, amount):
+        for t in self.turtles:
+            t.forward(amount)
+
+    def left(self, amount):
+        for t in self.turtles:
+            t.left(amount)
+            
+    def right(self, amount):
+        for t in self.turtles:
+            t.right(amount)
+
+NPCs = NPC_tracker([
+    newNPC("red", -20, 180, "fastest"),
+    newNPC("blue", -50, 180, "fastest"),
+    newNPC("orange", -20, 150, "fastest"),
+    newNPC("green", -50, 150, "fastest"),
+])
+
+player = newNPC(None, -80, 165, None)
 player.penup()
-player.goto(-80, 165)
-player.hideturtle()
 
 #variables
 font_setup = ("Arial", 20, "normal")
 
-global dist
 dist = 5
 
 #functions
-def inicourseforward ():
+def inicourseforward():
   course1.forward(140)
   course2.forward(70)
 
@@ -168,113 +169,53 @@ def playermovecheck():
 	wn.onkey(playerdown, "s")
 	wn.onkey(playerup, "w")
 
+#wn.onkeypress(playermovecheck, "d")
+
 def npccourse():
   wn.listen()
-  x = 0
-  while x < 35:
-    npc1.forward(4)
-    wn.onkeypress(playermovecheck, "d")
-    npc2.forward(4)
-    wn.onkeypress(playermovecheck, "d")
-    npc3.forward(4)
-    wn.onkeypress(playermovecheck, "d")
-    npc4.forward(4)
-    x += 1
-  npc1.right(90)
-  npc2.right(90)
-  npc3.right(90)
-  npc4.right(90)
-  x = 0
-  while x < 25:
-    npc1.forward(4)
-    npc2.forward(4)
-    npc3.forward(4)
-    npc4.forward(4)
-    x += 1
-  npc1.left(90)
-  npc2.left(90)
-  npc3.left(90)
-  npc4.left(90)
-  x = 0
-  while x < 35:
-    npc1.forward(4)
-    npc2.forward(4)
-    npc3.forward(4)
-    npc4.forward(4)
-    x += 1
-  x = 0
-  while x < 15:
-    npc1.forward(4)
-    npc2.forward(4)
-    npc3.forward(4)
-    npc4.forward(4)
-    x += 1
-  npc1.right(90)
-  npc2.right(90)
-  npc3.right(90)
-  npc4.right(90)
-  x = 0
-  while x < 60:
-    npc1.forward(4)
-    npc2.forward(4)
-    npc3.forward(4)
-    npc4.forward(4)
-    x += 1
-  npc1.right(90)
-  npc2.right(90)
-  npc3.right(90)
-  npc4.right(90)
-  x = 0
-  while x < 87:
-    npc1.forward(4)
-    npc2.forward(4)
-    npc3.forward(4)
-    npc4.forward(4)
-    x += 1
-  npc1.right(90)
-  npc2.right(90)
-  npc3.right(90)
-  npc4.right(90)
-  x = 0
-  while x < 25:
-    npc1.forward(4)
-    npc2.forward(4)
-    npc3.forward(4)
-    npc4.forward(4)
-    x += 1
-  npc1.left(90)
-  npc2.left(90)
-  npc3.left(90)
-  npc4.left(90)
-  x = 0
-  while x < 75:
-    npc1.forward(4)
-    npc2.forward(4)
-    npc3.forward(4)
-    npc4.forward(4)
-    x += 1
-  npc1.right(90)
-  npc2.right(90)
-  npc3.right(90)
-  npc4.right(90)
-  x = 0
-  while x < 60:
-    npc1.forward(4)
-    npc2.forward(4)
-    npc3.forward(4)
-    npc4.forward(4)
-    x += 1
-  npc1.right(90)
-  npc2.right(90)
-  npc3.right(90)
-  npc4.right(90)
-  x = 0
-  while x < 57:
-    npc1.forward(4)
-    npc2.forward(4)
-    npc3.forward(4)
-    npc4.forward(4)
-    x += 1
+
+  for _ in range(35):
+    NPCs.forward(4)
+
+  NPCs.right(90)
+  
+  for _ in range(25):
+    NPCs.forward(4)
+
+  NPCs.left(90)
+
+  for _ in range(50):
+    NPCs.forward(4)
+
+  NPCs.right(90)
+  
+  for _ in range(60):
+    NPCs.forward(4)
+
+  NPCs.right(90)
+
+  for _ in range(87):
+    NPCs.forward(4)
+
+  NPCs.right(90)
+
+  for _ in range(25):
+    NPCs.forward(4)
+
+  NPCs.left(90)
+  
+  for _ in range(75):
+    NPCs.forward(4)
+
+  NPCs.right(90)
+  
+  for _ in range(60):
+    NPCs.forward(4)
+    
+  NPCs.right(90)
+  
+  for _ in range(57):
+    NPCs.forward(4)
 
 def speedincrease():
 	global dist
