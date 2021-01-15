@@ -3,11 +3,13 @@ import turtle as tr
 wn = tr.Screen()
 wn.setup(width=1.0, height=1.0)
 
-#lists
+#list of charecters that may be used to boost speed
 alphabet = ['b','c','e','f','g','h','i','j','k','l','m','n','o','p','q','r','t','u','v','x','y','z']
 
+#these classes and functions make it easier to work with turtles
 class NPC_tracker:
   def __init__(self, turtles):
+    "Accepts an arbitrarily long list of turtle objects and allows you to move them like one turtle! *Many methods of the Turtle class are unneeded and go unimplemented in this helper*"
     self.turtles = turtles
 
   def forward(self, amount):
@@ -27,6 +29,7 @@ class NPC_tracker:
       t.st()
 
 def quickTurtle(x, y, speed):
+  "Creates a turtle at the given position with the given speed. The pen starts down and the turtle is hidden."
   t = tr.Turtle()
   t.penup()
   t.hideturtle()
@@ -36,6 +39,7 @@ def quickTurtle(x, y, speed):
   return t
 
 def newNPC(color, x, y, speed):
+  "Creates a turtle with the color, position and speed given. The pen starts up and the turtle is hidden. Color and speed are optional. Pass any false-y value to have these properties remain as the default."
   t = tr.Turtle()
   t.penup()
   t.hideturtle()
@@ -49,27 +53,27 @@ def newNPC(color, x, y, speed):
 
   return t
 
-#functions
-def inicourseforward():
+#functions that make the game possible!
+def initcourseForward():
   courseTurtles.turtles[0].forward(140)
   courseTurtles.turtles[1].forward(70)
 
-def courseforward():
+def courseForward():
   courseTurtles.forward(100)
 
-def courseforward2():
+def courseForward2():
   courseTurtles.turtles[0].forward(210)
   courseTurtles.turtles[1].forward(70)
 
-def courseright():
+def courseRight():
   courseTurtles.right(90)
   courseTurtles.forward(100)
 
-def courseleft():
+def courseLeft():
   courseTurtles.left(90)
   courseTurtles.forward(100)
 
-def startline():
+def startLine():
   st.penup()
   st.goto(0,197)
   st.pendown()
@@ -79,59 +83,58 @@ def startline():
   st.pendown()
   st.forward(64)
 
-def shownpc():
+def showPC():
   NPCs.st()
   player.st()
 
-def playerright():
+def playerRight():
   player.setheading(0)
   player.forward(game_state["dist"])
 
-def playerleft():
+def playerLeft():
   player.setheading(180)
   player.forward(game_state["dist"])
   
-def playerdown():
+def playerDown():
   player.setheading(270)
   player.forward(game_state["dist"])
 
-def playerup():
+def playerUp():
   player.setheading(90)
   player.forward(game_state["dist"])
 
-def drawcourse():
+def drawCourse():
   text.clear()
-  inicourseforward()
-  courseright()
-  courseleft()
-  courseforward()
-  courseright()
-  courseforward2()
-  courseright()
-  courseforward2()
-  courseforward()
-  courseright()
-  courseleft()
-  courseforward()
-  courseforward()
-  courseright()
-  courseforward2()
-  courseright()
-  courseforward()
-  inicourseforward()
-  courseforward()
-  startline()
-  shownpc()
+  initcourseForward()
+  courseRight()
+  courseLeft()
+  courseForward()
+  courseRight()
+  courseForward2()
+  courseRight()
+  courseForward2()
+  courseForward()
+  courseRight()
+  courseLeft()
+  courseForward()
+  courseForward()
+  courseRight()
+  courseForward2()
+  courseRight()
+  courseForward()
+  initcourseForward()
+  courseForward()
+  startLine()
+  showPC()
 
-def playermovecheck():
+def playerMoveCheck():
   wn.onkeypress( speedincrease, game_state["random_letter"])
-  wn.onkey(playerright, "d")
-  wn.onkey(playerleft, "a")
-  wn.onkey(playerdown, "s")
-  wn.onkey(playerup, "w")
+  wn.onkey(playerRight, "d")
+  wn.onkey(playerLeft, "a")
+  wn.onkey(playerDown, "s")
+  wn.onkey(playerUp, "w")
 
-def npccourse():
-
+def npcCourse():
   for _ in range(35):
     NPCs.forward(4)
 
@@ -179,7 +182,9 @@ def speedincrease():
   game_state["dist"] = 15
   print("You've increased your speed!")
 
+#with that out of the way, let's make some objects!
 
+#these are the first four NPCs that you race against
 NPCs = NPC_tracker([
   newNPC("red", -20, 180, "fastest"),
   newNPC("blue", -50, 180, "fastest"),
@@ -187,52 +192,50 @@ NPCs = NPC_tracker([
   newNPC("green", -50, 150, "fastest"),
 ])
 
+#add a player
 player = newNPC(None, -80, 165, None)
 player.penup()
 
-
-
-#Turtle Setup
+#create a text object so we can display messages faster!
 text = tr.Turtle() 
 text.hideturtle()
 text.penup()
 
-#first course turtle
+#these turtles help us draw the course
 courseTurtles = NPC_tracker([
   quickTurtle(0,200,"fastest"),
   quickTurtle(0,130,"fastest")
 ])
 
-#finish/startline turtle
+#this turtle draws the start and finish line
 st = tr.Turtle()
 st.pencolor("yellow")
 st.hideturtle()
 st.pensize(5)
 st.setheading(-90)
 
-#variables
+#variables are nice. Let's add a couple of them
 FONT_SETUP = ("Arial", 20, "normal")
 
+#these values represent how far the player should move and what keys they need to push to move faster
 game_state = {
   "dist": 5,
   "random_letter": random.choice(alphabet)
 }
 
-
-#Screen of text that says the game’s name
+#draw the opening scene
 text.goto(-70,0) #Text go to middle of screen
-text.write("Turtle Race", font=FONT_SETUP) #Type “Turtle Race” working name
+text.write("Turtle Race", font=FONT_SETUP) #Types "Turtle Race"
 text.goto(-105,-50) #goes to below text
-text.write("Enter your name", font=FONT_SETUP) #types enter name
+text.write("Enter your name", font=FONT_SETUP) #requests that the user inputs a name in the console
 
 print("Welcome to Turtle Race. " + input("Name: ") + ", click into the window and press 5 when ready") #prints welcome msg
 
-#events
+#what? All that work and you actually want to PLAY the game? Fine. I'll listen for your keypresses.
 wn.listen()
 
-wn.onkeypress(playermovecheck, "d")
-wn.onkeypress(drawcourse, "5")
-wn.onkeypress(npccourse, "6")
-
+wn.onkeypress(playerMoveCheck, "d")
+wn.onkeypress(drawCourse, "5")
+wn.onkeypress(npcCourse, "6")
 
 wn.mainloop()
