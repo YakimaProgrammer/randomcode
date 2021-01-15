@@ -55,14 +55,14 @@ def newNPC(color, x, y, speed):
 
 #functions that make the game possible!
 def initcourseForward():
-  courseTurtles.turtles[0].forward(140)
-  courseTurtles.turtles[1].forward(70)
+  courseTurtles.turtles[0].forward(140) #In this case, I need to manually manipulate turtles independently
+  courseTurtles.turtles[1].forward(70)  #even though, most of the time, I'm moving them the same amount
 
 def courseForward():
   courseTurtles.forward(100)
 
 def courseForward2():
-  courseTurtles.turtles[0].forward(210)
+  courseTurtles.turtles[0].forward(210) #Same thing over here
   courseTurtles.turtles[1].forward(70)
 
 def courseRight():
