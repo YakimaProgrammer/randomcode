@@ -4,21 +4,7 @@ wn = tr.Screen()
 wn.setup(width=1.0, height=1.0)
 
 #lists
-alphabet = ('b','c','e','f','g','h','i','j','k','l','m','n','o','p','q','r','t','u','v','x','y','z')
-
-def newNPC(color, x, y, speed):
-  t = tr.Turtle()
-  t.penup()
-  t.hideturtle()
-  t.goto(x, y)
-  
-  if color:
-    t.color(color)
-
-  if speed:
-    t.speed(speed)
-
-  return t
+alphabet = ['b','c','e','f','g','h','i','j','k','l','m','n','o','p','q','r','t','u','v','x','y','z']
 
 class NPC_tracker:
   def __init__(self, turtles):
@@ -40,16 +26,6 @@ class NPC_tracker:
     for t in self.turtles:
       t.st()
 
-NPCs = NPC_tracker([
-  newNPC("red", -20, 180, "fastest"),
-  newNPC("blue", -50, 180, "fastest"),
-  newNPC("orange", -20, 150, "fastest"),
-  newNPC("green", -50, 150, "fastest"),
-])
-
-player = newNPC(None, -80, 165, None)
-player.penup()
-
 def quickTurtle(x, y, speed):
   t = tr.Turtle()
   t.penup()
@@ -59,28 +35,19 @@ def quickTurtle(x, y, speed):
   t.speed(speed)
   return t
 
-#Turtle Setup
-text = tr.Turtle() 
-text.hideturtle()
-text.penup()
+def newNPC(color, x, y, speed):
+  t = tr.Turtle()
+  t.penup()
+  t.hideturtle()
+  t.goto(x, y)
+  
+  if color:
+    t.color(color)
 
-#first course turtle
-courseTurtles = NPC_tracker([
-  quickTurtle(0,200,"fastest"),
-  quickTurtle(0,130,"fastest")
-])
+  if speed:
+    t.speed(speed)
 
-#finish/startline turtle
-st = tr.Turtle()
-st.pencolor("yellow")
-st.hideturtle()
-st.pensize(5)
-st.setheading(-90)
-
-#variables
-font_setup = ("Arial", 20, "normal")
-
-dist = 5
+  return t
 
 #functions
 def inicourseforward():
@@ -118,25 +85,19 @@ def shownpc():
 
 def playerright():
   player.setheading(0)
-  player.forward(dist)
+  player.forward(game_state["dist"])
 
 def playerleft():
   player.setheading(180)
-  player.forward(dist)
+  player.forward(game_state["dist"])
   
 def playerdown():
   player.setheading(270)
-  player.forward(dist)
+  player.forward(game_state["dist"])
 
 def playerup():
   player.setheading(90)
-  player.forward(dist)
-
-def randletter():
-	global letter
-	letter = alphabet[random.randint(0,21)]
-	#print(letter)
-
+  player.forward(game_state["dist"])
 
 def drawcourse():
   text.clear()
@@ -161,19 +122,15 @@ def drawcourse():
   courseforward()
   startline()
   shownpc()
-  randletter()
 
 def playermovecheck():
-	wn.onkeypress( speedincrease, letter)
-	wn.onkey(playerright, "d")
-	wn.onkey(playerleft, "a")
-	wn.onkey(playerdown, "s")
-	wn.onkey(playerup, "w")
-
-#wn.onkeypress(playermovecheck, "d")
+  wn.onkeypress( speedincrease, game_state["random_letter"])
+  wn.onkey(playerright, "d")
+  wn.onkey(playerleft, "a")
+  wn.onkey(playerdown, "s")
+  wn.onkey(playerup, "w")
 
 def npccourse():
-  wn.listen()
 
   for _ in range(35):
     NPCs.forward(4)
@@ -219,27 +176,61 @@ def npccourse():
     NPCs.forward(4)
 
 def speedincrease():
-  global dist
-  dist = 15
+  game_state["dist"] = 15
   print("You've increased your speed!")
 
+
+NPCs = NPC_tracker([
+  newNPC("red", -20, 180, "fastest"),
+  newNPC("blue", -50, 180, "fastest"),
+  newNPC("orange", -20, 150, "fastest"),
+  newNPC("green", -50, 150, "fastest"),
+])
+
+player = newNPC(None, -80, 165, None)
+player.penup()
+
+
+
+#Turtle Setup
+text = tr.Turtle() 
+text.hideturtle()
+text.penup()
+
+#first course turtle
+courseTurtles = NPC_tracker([
+  quickTurtle(0,200,"fastest"),
+  quickTurtle(0,130,"fastest")
+])
+
+#finish/startline turtle
+st = tr.Turtle()
+st.pencolor("yellow")
+st.hideturtle()
+st.pensize(5)
+st.setheading(-90)
+
+#variables
+FONT_SETUP = ("Arial", 20, "normal")
+
+game_state = {
+  "dist": 5,
+  "random_letter": random.choice(alphabet)
+}
 
 
 #Screen of text that says the game’s name
 text.goto(-70,0) #Text go to middle of screen
-text.write("Turtle Race", font=font_setup) #Type “Turtle Race” working name
+text.write("Turtle Race", font=FONT_SETUP) #Type “Turtle Race” working name
 text.goto(-105,-50) #goes to below text
-text.write("Enter your name", font=font_setup) #types enter name
+text.write("Enter your name", font=FONT_SETUP) #types enter name
 
-#input for Name
-playername = input("Name: ") #input for players name
-print("Welcome to Turtle Race. " + playername + ", click into the window and press 5 when ready") #prints welcome msg
-
-
+print("Welcome to Turtle Race. " + input("Name: ") + ", click into the window and press 5 when ready") #prints welcome msg
 
 #events
 wn.listen()
 
+wn.onkeypress(playermovecheck, "d")
 wn.onkeypress(drawcourse, "5")
 wn.onkeypress(npccourse, "6")
 
