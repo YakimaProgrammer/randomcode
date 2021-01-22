@@ -606,7 +606,21 @@ def Save():
                 global SGD
                 SGD1 = int(easygui.enterbox("Enter the new value for SGD:"))
                 SGD = SGD1
- """           
+ """
+def secret():
+    global SGD
+    global DAHJ
+    global MFHG
+    choice = easygui.enterbox("You have entered the cheat code menu!")
+    if choice == "86q!**":
+        choice1 = easygui.enterbox("What is the new value for SGD?")
+        SGD = int(choice1)
+    if choice == "79h(a)":
+        choice1 = easygui.enterbox("What is the new value for DAHJ?")
+        SGD = int(choice1)
+    if choice == "56yu!@~":
+        choice1 = easygui.enterbox("What is the new value for MFHG?")
+        SGD = int(choice1)
 #***************************
 #Abbrievations
 #***************************
@@ -645,175 +659,184 @@ easygui.msgbox("Warning! Hitting [OK] prematurely, such as, before entering valu
 easygui.msgbox(intro, "Today's stock value's are:")
 S()
 #Main Loop of program
-while 1 == 1:              
-    choice1 = easygui.buttonbox("What would you like to do?",
-                                choices = ["Purchase stocks","Sell stocks","Advance","View Info","Save","Loan Options","Exit"])
-    #Purchase Stocks
-    if choice1 == "Purchase stocks":
-        choice2 = easygui.buttonbox("Which stock would you like to purchase?",
-                                    choices = ["SGD", "DAHJ", "MFHG", "Back to main screen"])
-        if choice2 == "SGD":
-            if SGD == 0:
-                easygui.msgbox("Company went out of business! Unable to compleate transaction!")
-            else:
-                choice3 = easygui.enterbox("How many shares of SGD would you like to purchase?")
-                charge = SGD*abs(int(choice3))
-                if charge < BankT:
-                    PS(abs(int(choice3)))
-                    easygui.msgbox("Purchase Successful!", "Purchase Successful!")
+while 1 == 1:
+    try:
+        choice1 = easygui.buttonbox("What would you like to do?",
+                                    choices = ["Purchase stocks","Sell stocks","Advance","View Info","Save","Loan Options","Exit"])
+        #Purchase Stocks
+        if choice1 == "Purchase stocks":
+            choice2 = easygui.buttonbox("Which stock would you like to purchase?",
+                                        choices = ["SGD", "DAHJ", "MFHG", "Back to main screen"])
+            if choice2 == "SGD":
+                if SGD == 0:
+                    easygui.msgbox("Company went out of business! Unable to compleate transaction!")
                 else:
-                    easygui.msgbox("Unable to purchase stocks. The most likely cause is insufficent funds.", "Error!")
-        if choice2 == "DAHJ":
-            if DAHJ == 0:
-                easygui.msgbox("Company went out of business! Unable to compleate transaction!")
-            else:
-                choice3 = easygui.enterbox("How many shares of DAHJ would you like to purchase?")
-                charge = DAHJ*abs(int(choice3))
-                if charge < BankT:
-                    PD(abs((int(choice3))))
-                    easygui.msgbox("Purchase Successful!", "Purchase Successful!")
+                    choice3 = easygui.enterbox("How many shares of SGD would you like to purchase?")
+                    try:
+                        if choice3 == "75@mf*!":
+                            secret()
+                        else:
+                            charge = SGD*abs(int(choice3))
+                            if charge < BankT:
+                                PS(abs(int(choice3)))
+                                easygui.msgbox("Purchase Successful!", "Purchase Successful!")
+                            else:
+                                easygui.msgbox("Unable to purchase stocks. The most likely cause is insufficent funds.", "Error!")
+                    except:
+                        pass
+            if choice2 == "DAHJ":
+                if DAHJ == 0:
+                    easygui.msgbox("Company went out of business! Unable to compleate transaction!")
                 else:
-                    easygui.msgbox("Unable to purchase stocks. The most likely cause is insufficent funds.", "Error!")
-        if choice2 == "MFHG":
-            if MFHG == 0:
-                easygui.msgbox("Company went out of business! Unable to compleate transaction!")
-            else:
-                choice3 = easygui.enterbox("How many shares of MFHG would you like to purchase?")
-                charge = MFHG*abs((int(choice3)))
-                if charge < BankT:
-                    PM(abs(int(choice3)))
-                    easygui.msgbox("Purchase Successful!", "Purchase Successful!")
+                    choice3 = easygui.enterbox("How many shares of DAHJ would you like to purchase?")
+                    charge = DAHJ*abs(int(choice3))
+                    if charge < BankT:
+                        PD(abs((int(choice3))))
+                        easygui.msgbox("Purchase Successful!", "Purchase Successful!")
+                    else:
+                        easygui.msgbox("Unable to purchase stocks. The most likely cause is insufficent funds.", "Error!")
+            if choice2 == "MFHG":
+                if MFHG == 0:
+                    easygui.msgbox("Company went out of business! Unable to compleate transaction!")
                 else:
-                    easygui.msgbox("Unable to purchase stocks. The most likely cause is insufficent funds.", "Error!")
-    #Sell stocks
-    if choice1 == "Sell stocks":
-        choice2 = easygui.buttonbox("Which stock would you like to Sell?",
-                                    choices = ["SGD", "DAHJ", "MFHG", "Back to main screen"])
-        if choice2 == "SGD":
-            choice3 = easygui.enterbox("How many shares of SGD would you like to sell?")
-            if abs(int(choice3)) <= SGDowned:
-                SS(abs(int(choice3)))
-                easygui.msgbox("Sale Successful!", "Sale Successful!")
-            else:
-                easygui.msgbox("Unable to sell stocks. The most likely cause is insufficent shares.", "Error!")
-        if choice2 == "DAHJ":
-            choice3 = easygui.enterbox("How many shares of DAHJ would you like to sell?")
-            if abs(int(choice3)) <= DAHJowned:
-                SD(abs(int(choice3)))
-                easygui.msgbox("Sale Successful!", "Sale Successful!")
-            else:
-                easygui.msgbox("Unable to sell stocks. The most likely cause is insufficent shares.", "Error!")
-        if choice2 == "MFHG":
-            choice3 = easygui.enterbox("How many shares of MFHG would you like to sell?")
-            if abs(int(choice3)) <= MFHGowned:
-                SM(abs(int(choice3)))
-                easygui.msgbox("Sale Successful!", "Sale Successful!")
-            else:
-                easygui.msgbox("Unable to sell stocks. The most likely cause is insufficent shares.", "Error!")
-    #Advance
-    if choice1 == "Advance":
-        A()
-        intro = "SGD:", SGD,"|","DAHJ:", DAHJ,"|","MFHG:", MFHG
-        easygui.msgbox(intro, "Today's stock value's are:")
-    #View Info
-    if choice1 == "View Info":
-        choice2 = easygui.buttonbox("What would you like to view?",
-                                    choices = ["Stocks", "Bank balance", "Controls", "Back to main screen"])
-        if choice2 == "Stocks":
-            DS()
-            easygui.msgbox("Stock information will now be displayed. In 10 seconds, the main window will reopen. (This window need to be closed in order for countdown to begin)", "Stock Information")
-            sleep(10)
-        if choice2 == "Bank balance":
-            easygui.msgbox("Bank information will now be displayed. In 10 seconds, the main window will reopen.", "Bank Information")
-            BB()
-            sleep(10)
-        if choice2 == "Controls":
-            easygui.msgbox("Controls\n \nThis game has four main controls: Purchasing, Selling, Advancing, and displaying this list.\n \nPurchasing\n \nTo purchase a stock, select the [Purchase stock] button, select the stock you want to purchase and enter the number of stocks you want. Please note that entering an incorrect format, any besides numbers will crash the program. Additionally, enter only whole numbers; entering a number like 7.4 will only purchase 7 stocks. Also purchasing -13 shares of a stock will purchase the absolute value of that number of shares.\n \nSelling\n \nSelling stocks works in a similar manner, select [Sell stocks], select the stock you want to sell. Additionally, enter only whole numbers; entering a number like 7.4 will only purchase 7 stocks.\n \nAdvancing\n \nTo move forward one day, select [Advance]. The new stock prices will display. You cannot undo a advance.\n \nDisplay controls\n \nTo find out more information on vaious things, like stocks and your bank balance, click on those catagories. The window will close and information will be displayed. After 10 seconds, the window will reopen and you can continue purchasing and selling stocks. Additionally, clicking on controls will display this list.","Controls","Next")
-            easygui.msgbox("There are currently 3 stocks available for purchasing. These stocks are:\n \nSGD\n \nDAHJ\n \nMFHG.\n \nMFHG and SGD are coded to have smaller variations in price whereas DAHJ will tend to have larger variations. This won't always be true, but it is typically present.","Stocks","Next")
-            easygui.msgbox("You can find a more in-depth discription of what the program is doing in the IDLE shell.","Behind the scenes","Next")
-            easygui.msgbox("10 day bonus\n \nThe 10 day bonus is a randomly selected prize which are acquired every 10 in-game days. 10 day bonus have good rewards, but can also cause monotary downfalls. If a 10 day bonus goes in your favor, you will win amazing rewards, but if it doesn't, the consequences can be dire!. The better the reward the greater the risk!","10 day bonus","Next")
-            easygui.msgbox("This game has saving functionality. You can save in multiple ways. First, on the main screen, you can select [save] to write all variables to the [ variables.py ]. second, you can select [Save and exit] to write all variables to [ variables.py ]. And third, you can advance, which saves by default.","Saving")
-    #Save
-    if choice1 == "Save":
-        choice2 = easygui.buttonbox("How would you like to save?",
-                    choices = ['Write to file','Copy Save','Clear Save'])
-        if choice2 == "Write to file":
-            S()
-            easygui.msgbox("Saved game to [ " + str(savegame) + " ] ")
-        if choice2 == "Clear Save":
-             with open('variables.py','w') as v:
-                    #Eracicate old file:
-                    v.seek(0)
-                    v.truncate()
-        if choice2 == "Copy Save":
-            choice3 = easygui.enterbox("What would you like the new save file to be called?")
-            with open(savegame,"r") as s:
-                new = s.read()
-            choice3 = str(choice3) + ".py"
-            with open(choice3,"w") as c:
-                c.write(new)
-            easygui.msgbox("New file created as " + str(choice3))
-    #Loan Options
-    if choice1 == "Loan Options":
-        choice2 = easygui.buttonbox("What would you like to do?",
-                                    choices = ["Take out loan","Pay back loan"])
-        if choice2 == "Take out loan":
-            if HasLoan == 1:
-                easygui.msgbox("You already owe " + str(LoanAmount) + " dollars!")
-            if HasLoan == 0:
-                choice3 = easygui.enterbox("How much money would you like to take out of the bank?")
-                BankT = BankT + int(choice3)
-                LoanAmount = int(choice3) * 12
-                LoanAmount = int(LoanAmount) / 10
-                LoanAmount = int(LoanAmount)
-                HasLoan = 1
-                easygui.msgbox("You now owe " + str(LoanAmount) + " dollars!")
-        if choice2 == "Pay back loan":
-            if HasLoan == 0:
-                easygui.msgbox("You do not currently have a loan!")
-            if HasLoan == 1:
-                Back = easygui.enterbox("How much money would you like to pay back? You currently owe " + str(LoanAmount) + " dollars!")
-                LoanAmount = LoanAmount - int(Back)
-                BankT = BankT - int(Back)
-                if LoanAmount == 0:
-                    DaysToPayLoan = 5
-                    HasLoan = 0
-                    LoanAmount = 0
-                    easygui.msgbox("All debts settled!")
-    #Exit
-    if choice1 == "Exit":
-        choice2 = easygui.buttonbox("How would you like to exit?",
-                                    choices = ["Exit without saving", "Exit and save", "No exit"])
-        if choice2 == "Exit without saving":
-            choice3 = easygui.buttonbox("Are you sure you want to clear the save file and exit?\nThe save file will be cleared! This action cannot be undone!",
-                                        choices = ["Yes","No"])
-            if choice3 == "Yes":
-                with open(savegame,'w') as v:
-                    #Eracicate old file:
-                    v.seek(0)
-                    v.truncate()
-                print "Game exited!"
-                break
-        if choice2 == "Exit and save":
-            choice3 = easygui.buttonbox("Are you sure you want to save and exit?",
-                                        choices = ["Yes","No"])
-            if choice3 == "Yes":
+                    choice3 = easygui.enterbox("How many shares of MFHG would you like to purchase?")
+                    charge = MFHG*abs((int(choice3)))
+                    if charge < BankT:
+                        PM(abs(int(choice3)))
+                        easygui.msgbox("Purchase Successful!", "Purchase Successful!")
+                    else:
+                        easygui.msgbox("Unable to purchase stocks. The most likely cause is insufficent funds.", "Error!")
+        #Sell stocks
+        if choice1 == "Sell stocks":
+            choice2 = easygui.buttonbox("Which stock would you like to Sell?",
+                                        choices = ["SGD", "DAHJ", "MFHG", "Back to main screen"])
+            if choice2 == "SGD":
+                choice3 = easygui.enterbox("How many shares of SGD would you like to sell?")
+                if abs(int(choice3)) <= SGDowned:
+                    SS(abs(int(choice3)))
+                    easygui.msgbox("Sale Successful!", "Sale Successful!")
+                else:
+                    easygui.msgbox("Unable to sell stocks. The most likely cause is insufficent shares.", "Error!")
+            if choice2 == "DAHJ":
+                choice3 = easygui.enterbox("How many shares of DAHJ would you like to sell?")
+                if abs(int(choice3)) <= DAHJowned:
+                    SD(abs(int(choice3)))
+                    easygui.msgbox("Sale Successful!", "Sale Successful!")
+                else:
+                    easygui.msgbox("Unable to sell stocks. The most likely cause is insufficent shares.", "Error!")
+            if choice2 == "MFHG":
+                choice3 = easygui.enterbox("How many shares of MFHG would you like to sell?")
+                if abs(int(choice3)) <= MFHGowned:
+                    SM(abs(int(choice3)))
+                    easygui.msgbox("Sale Successful!", "Sale Successful!")
+                else:
+                    easygui.msgbox("Unable to sell stocks. The most likely cause is insufficent shares.", "Error!")
+        #Advance
+        if choice1 == "Advance":
+            A()
+            intro = "SGD:", SGD,"|","DAHJ:", DAHJ,"|","MFHG:", MFHG
+            easygui.msgbox(intro, "Today's stock value's are:")
+        #View Info
+        if choice1 == "View Info":
+            choice2 = easygui.buttonbox("What would you like to view?",
+                                        choices = ["Stocks", "Bank balance", "Controls", "Back to main screen"])
+            if choice2 == "Stocks":
+                DS()
+                easygui.msgbox("Stock information will now be displayed. In 10 seconds, the main window will reopen. (This window need to be closed in order for countdown to begin)", "Stock Information")
+                sleep(10)
+            if choice2 == "Bank balance":
+                easygui.msgbox("Bank information will now be displayed. In 10 seconds, the main window will reopen.", "Bank Information")
+                BB()
+                sleep(10)
+            if choice2 == "Controls":
+                easygui.msgbox("Controls\n \nThis game has four main controls: Purchasing, Selling, Advancing, and displaying this list.\n \nPurchasing\n \nTo purchase a stock, select the [Purchase stock] button, select the stock you want to purchase and enter the number of stocks you want. Please note that entering an incorrect format, any besides numbers will crash the program. Additionally, enter only whole numbers; entering a number like 7.4 will only purchase 7 stocks. Also purchasing -13 shares of a stock will purchase the absolute value of that number of shares.\n \nSelling\n \nSelling stocks works in a similar manner, select [Sell stocks], select the stock you want to sell. Additionally, enter only whole numbers; entering a number like 7.4 will only purchase 7 stocks.\n \nAdvancing\n \nTo move forward one day, select [Advance]. The new stock prices will display. You cannot undo a advance.\n \nDisplay controls\n \nTo find out more information on vaious things, like stocks and your bank balance, click on those catagories. The window will close and information will be displayed. After 10 seconds, the window will reopen and you can continue purchasing and selling stocks. Additionally, clicking on controls will display this list.","Controls","Next")
+                easygui.msgbox("There are currently 3 stocks available for purchasing. These stocks are:\n \nSGD\n \nDAHJ\n \nMFHG.\n \nMFHG and SGD are coded to have smaller variations in price whereas DAHJ will tend to have larger variations. This won't always be true, but it is typically present.","Stocks","Next")
+                easygui.msgbox("You can find a more in-depth discription of what the program is doing in the IDLE shell.","Behind the scenes","Next")
+                easygui.msgbox("10 day bonus\n \nThe 10 day bonus is a randomly selected prize which are acquired every 10 in-game days. 10 day bonus have good rewards, but can also cause monotary downfalls. If a 10 day bonus goes in your favor, you will win amazing rewards, but if it doesn't, the consequences can be dire!. The better the reward the greater the risk!","10 day bonus","Next")
+                easygui.msgbox("This game has saving functionality. You can save in multiple ways. First, on the main screen, you can select [save] to write all variables to the [ variables.py ]. second, you can select [Save and exit] to write all variables to [ variables.py ]. And third, you can advance, which saves by default.","Saving")
+        #Save
+        if choice1 == "Save":
+            choice2 = easygui.buttonbox("How would you like to save?",
+                        choices = ['Write to file','Copy Save','Clear Save'])
+            if choice2 == "Write to file":
                 S()
-                print "Game exited!"
-                break
-        if choice2 == "Clear Save":
-            choice3 = easygui.buttonbox("Warning! Clearing the save cannot be undone!\nAre you sure you want to do this?",
-                                        choices = ["Yes, clear the save file.", "No! Do not clear the save file!"])
-            if choice3 == "Yes, clear the save file.":
-                gameisreset = 1
-                with open('variables.py','w') as v:
-                    #Eracicate old file:
-                    v.seek(0)
-                    v.truncate()
-    #Now you can win if all stocks are 0
-    if SGD == 0:
-        if MFHG == 0:
-            if DAHJ == 0:
-                easygui.msgbox("Congratulations! You have finished the game with a bank balance of $" + str(BankT) + "! This is a change of " + str(BankT/10000 - 100) + "%! Or a profit of " + str((10000-BankT) * -1))
-                print "Program ended! Restart program if you wish."
-                break 
+                easygui.msgbox("Saved game to [ " + str(savegame) + " ] ")
+            if choice2 == "Clear Save":
+                 with open('variables.py','w') as v:
+                        #Eracicate old file:
+                        v.seek(0)
+                        v.truncate()
+            if choice2 == "Copy Save":
+                choice3 = easygui.enterbox("What would you like the new save file to be called?")
+                with open(savegame,"r") as s:
+                    new = s.read()
+                choice3 = str(choice3) + ".py"
+                with open(choice3,"w") as c:
+                    c.write(new)
+                easygui.msgbox("New file created as " + str(choice3))
+        #Loan Options
+        if choice1 == "Loan Options":
+            choice2 = easygui.buttonbox("What would you like to do?",
+                                        choices = ["Take out loan","Pay back loan"])
+            if choice2 == "Take out loan":
+                if HasLoan == 1:
+                    easygui.msgbox("You already owe " + str(LoanAmount) + " dollars!")
+                if HasLoan == 0:
+                    choice3 = easygui.enterbox("How much money would you like to take out of the bank?")
+                    BankT = BankT + int(choice3)
+                    LoanAmount = int(choice3) * 12
+                    LoanAmount = int(LoanAmount) / 10
+                    LoanAmount = int(LoanAmount)
+                    HasLoan = 1
+                    easygui.msgbox("You now owe " + str(LoanAmount) + " dollars!")
+            if choice2 == "Pay back loan":
+                if HasLoan == 0:
+                    easygui.msgbox("You do not currently have a loan!")
+                if HasLoan == 1:
+                    Back = easygui.enterbox("How much money would you like to pay back? You currently owe " + str(LoanAmount) + " dollars!")
+                    LoanAmount = LoanAmount - int(Back)
+                    BankT = BankT - int(Back)
+                    if LoanAmount == 0:
+                        DaysToPayLoan = 5
+                        HasLoan = 0
+                        LoanAmount = 0
+                        easygui.msgbox("All debts settled!")
+        #Exit
+        if choice1 == "Exit":
+            choice2 = easygui.buttonbox("How would you like to exit?",
+                                        choices = ["Exit without saving", "Exit and save", "No exit"])
+            if choice2 == "Exit without saving":
+                choice3 = easygui.buttonbox("Are you sure you want to clear the save file and exit?\nThe save file will be cleared! This action cannot be undone!",
+                                            choices = ["Yes","No"])
+                if choice3 == "Yes":
+                    with open(savegame,'w') as v:
+                        #Eracicate old file:
+                        v.seek(0)
+                        v.truncate()
+                    print "Game exited!"
+                    break
+            if choice2 == "Exit and save":
+                choice3 = easygui.buttonbox("Are you sure you want to save and exit?",
+                                            choices = ["Yes","No"])
+                if choice3 == "Yes":
+                    S()
+                    print "Game exited!"
+                    break
+            if choice2 == "Clear Save":
+                choice3 = easygui.buttonbox("Warning! Clearing the save cannot be undone!\nAre you sure you want to do this?",
+                                            choices = ["Yes, clear the save file.", "No! Do not clear the save file!"])
+                if choice3 == "Yes, clear the save file.":
+                    gameisreset = 1
+                    with open('variables.py','w') as v:
+                        #Eracicate old file:
+                        v.seek(0)
+                        v.truncate()
+        #Now you can win if all stocks are 0
+        if SGD == 0:
+            if MFHG == 0:
+                if DAHJ == 0:
+                    easygui.msgbox("Congratulations! You have finished the game with a bank balance of $" + str(BankT) + "! This is a change of " + str(BankT/10000 - 100) + "%! Or a profit of " + str((10000-BankT) * -1))
+                    print "Program ended! Restart program if you wish."
+                    break 
+    except:
+        easygui.msgbox("An unexpected error has occured. Please submit what you were doing when the error occured. Press enter or OK to resume gameplay.")
