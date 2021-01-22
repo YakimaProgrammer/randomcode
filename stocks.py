@@ -143,57 +143,67 @@ def advance():
     platinum = platinum/100
     unobtainium = unobtainium/100
     oil = oil/100
-    
+
+    global SGDowned
     global daystobonus
     daystobonus = daystobonus - 1
 
     #Tests if Daystobonus is 0
+    daystobonus = 0
     if daystobonus == 0:
         daystobonus = 10
         
         #Add new 10 day bonuses. Fix random prize.
-        prize = int(random.uniform(1,2))
+        prize = int(random.uniform(1,3))
         
         if prize == 2:
-            choice = easygui.buttonbox("10 day bonus aquired! You can accept and gain 10,000 dollars, gain 10 shares of unobtainium at current stock price, but have a 70% chance of losing everything!",
+            choice = easygui.buttonbox("10 day bonus aquired! You can accept and gain 10,000 dollars and 10 shares of unobtainium at " + str(unobtainium) +" dollars, but have a 50% chance of losing everything!",
                                       choices = ['Accept','Pass'])
             if choice == "Pass":
                 easygui.msgbox("You declined the 10 day bonus!")
             if choice == "Accept":
-                chance = int(random.uniform(1,100))
-                if chance < 30:
+                chance = int(random.uniform(1,3))
+                if chance == 2:
                     BankT = BankT + 10000
                     Un = unobtainium * 10
                     BankT = BankT + Un
+                    easygui.msgbox("You won the 10 day bonus!")
+                    print "You just won the Ten Day Bonus!"
                 else:
                     easygui.msgbox("You lost the 10 day bonus!")
                     print "You lost the 10 day bonus!"
+                    """
                     with open('variables.py','w') as v:
                         #Eracicate old file:
                         v.seek(0)
                         v.truncate()
                     print 0 / 0
-                    
+                    """
             
         if prize == 1:
-           choice = easygui.buttonbox("10 day bonus aquired! You can accept and gain 57 shares of SGD and then double SGD's current stock value, plus an additional 5,000 dallors, but have a fifty-fifty chace of losing 99% of your current savings, or you can pass on this offer.",
+           choice = easygui.buttonbox("10 day bonus aquired! You can accept and gain 57 shares of SGD and then double SGD's current stock value, which is currently valued at " + str(SGD) + " dollars, plus an additional 5,000 dallors, but have a fifty-fifty chace of losing 99% of your current savings, or you can pass on this offer.",
                                       choices = ['Accept', 'Pass'] )
           
            if choice == "Pass":
                 easygui.msgbox("You declined the 10 day bonus!")
+                print "You declined the 10 day bonus!"
 
            if choice == "Accept":
-                chance = int(random.uniform(1,20))
-                if chance < 9:
-                    SGDowned == SGDowned + 57
+                chance = int(random.uniform(1,3))
+                if chance == 1:
+                    SGDowned = SGDowned + 57
                     SGD = SGD*2
                     BankT = BankT + 5,000
+                    if type(BankT) is tuple:
+                        BankT = BankT[0]
                     print "You just won the Ten Day Bonus!"
-                    BB()
+                    easygui.msgbox("You won the 10 day bonus!")
                 else:
+                  if type(BankT) is tuple:
+                        BankT = BankT[0]
                   BankT = BankT / 99
                   print "You just lost the Ten Day Bonus."
-                  BB()
+                  easygui.msgbox("You lost the 10 day bonus!")
       
     global HasLoan
     global DaysToPayLoan
@@ -497,15 +507,17 @@ def BankBalance():
     global SGD
     global DAHJ
     global MFHG
-
+    global BankT
     global DAHJowned
     global MFHGowned
-
+    global SGDowned
+    if type(BankT) is tuple:
+        BankT = BankT[0]
     SGDn = SGD*SGDowned
     DAHJn = DAHJ*DAHJowned
     MFHGn = MFHG*MFHGowned
-    net = SGDn + DAHJn + MFHGn + BankT - LoanAmount
-    net2 = SGDn + DAHJn + MFHGn
+    net = int(SGDn) + int(DAHJn) + int(MFHGn) + int(BankT) - int(LoanAmount)
+    net2 = int(SGDn) + int(DAHJn) + int(MFHGn)
     print "Current Balance is:", BankT
     print "Currect loan amount is:", LoanAmount
     print "Current Networth is:", net
