@@ -47,6 +47,7 @@ print "Setting game functions"
 #When calling a varible in a function, use global then the varible name. No idea why it works, it just does!
 
 def advance():
+    global BankT
     global days
     days = days + 1
     SGDm = random.randint(66, 170)
@@ -66,6 +67,33 @@ def advance():
     global daystobonus
     daystobonus = daystobonus - 1
 
+    #Tests if Daystobonus is 0
+    if daystobonus == 0:
+        daystobonus = 10
+        prize = 1
+        if prize == 1:
+           choice = easygui.buttonbox("10 day bonus aquired! Choose 1 to gain 57 shares of SGD and then double SGD's current stock value, plus an additional 5,000 dallors, but have a fifty-fifty chace of losing 99% of your current savings, or 2 to pass on this offer.",
+                                      choices = ['1', '2'] )
+          
+        if choice == 2:
+            print "You declined the 10 day bonus offer."
+        else:
+                chance = random.randint(1, 2)
+        if chance == 1:
+                SGDowned == SGDowned + 57
+                SGD = SGD*2
+                BankT = BankT + 5,000
+                print "You just won the Ten Day Bonus!"
+                BB()
+        else:
+                BankT = BankT / 99
+                print "You just lost the Ten Day Bonus."
+                BB()
+
+
+
+
+    
     global SGDa
     global DAHJa
     global MFHGa
@@ -79,11 +107,16 @@ def advance():
     MFHGa = MFHGy / days
 
 
-    
     print "================================================================================"
     print "Day", days
     print "The new stock value's are:","SGD:", SGD,"|","DAHJ:", DAHJ,"|","MFHG", MFHG
 
+    if BankT == 0:
+        while 0==0:
+            print "Game over! All money was lost! Please exit and restart program."
+              
+      
+    
 #purchase functions
 #SGDowned
     #if SGDowned < BankT
@@ -229,8 +262,8 @@ def BankBalance():
     SGDn = SGD*SGDowned
     DAHJn = DAHJ*DAHJowned
     MFHGn = MFHG*MFHGowned
-    net = SGDn+ DAHJn + MFHGn + BankT - BankD
-    net2 = SGDn+ DAHJn + MFHGn
+    net = SGDn + DAHJn + MFHGn + BankT - BankD
+    net2 = SGDn + DAHJn + MFHGn
     print "Current Balance is:", BankT
     print "Currect Debt is:", BankD
     print "Current Networth is:", net
@@ -250,7 +283,7 @@ def Controls ():
     print "To view the amount of money you have in game, type in BankBalance(). This will print out the stats on your bank account, such as Bank total, debts, networth, and stock total values."
     print " "
     print "Display Stocks"
-    print "Use DisplayStocks() to display the stock names, their value, their average, and if their are above or below it, and how many shares you own of that stock."
+    print "Use DisplayStocks() to display the stock names, their value, their average, and if their are above or below the average, and how many shares you own of that stock."
     print " "
     print "Abbreviations:"
     print "To save time on typing, you can use these abbrevations."
