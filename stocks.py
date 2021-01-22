@@ -19,6 +19,7 @@ else:
     BankD = 0
     HasLoan = 0
     DaysToPayLoan = 5
+    LoanAmount = 0
     print "Bank variables set!"
     print "Adding Stocks"
     SGD = random.randint(1, 50)
@@ -149,41 +150,72 @@ def advance():
     #Tests if Daystobonus is 0
     if daystobonus == 0:
         daystobonus = 10
-        prize = 1
+        
+        #Add new 10 day bonuses. Fix random prize.
+        prize = int(random.uniform(1,2))
+        
+        if prize == 2:
+            choice = easygui.buttonbox("10 day bonus aquired! You can accept and gain 10,000 dollars, gain 10 shares of unobtainium at current stock price, but have a 70% chance of losing everything!",
+                                      choices = ['Accept','Pass'])
+            if choice == "Pass":
+                easygui.msgbox("You declined the 10 day bonus!")
+            if choice == "Accept":
+                chance = int(random.uniform(1,100))
+                if chance < 30:
+                    BankT = BankT + 10000
+                    Un = unobtainium * 10
+                    BankT = BankT + Un
+                else:
+                    easygui.msgbox("You lost the 10 day bonus!")
+                    print "You lost the 10 day bonus!"
+                    with open('variables.py','w') as v:
+                        #Eracicate old file:
+                        v.seek(0)
+                        v.truncate()
+                    print 0 / 0
+                    
+            
         if prize == 1:
            choice = easygui.buttonbox("10 day bonus aquired! You can accept and gain 57 shares of SGD and then double SGD's current stock value, plus an additional 5,000 dallors, but have a fifty-fifty chace of losing 99% of your current savings, or you can pass on this offer.",
                                       choices = ['Accept', 'Pass'] )
           
-        if choice == "Pass":
-            easygui.msgbox("You declined the 10 day bonus!")
+           if choice == "Pass":
+                easygui.msgbox("You declined the 10 day bonus!")
 
-        if choice == "Accept":
-            chance = random.randint(0, 20)
-            if chance < 9:
-                SGDowned == SGDowned + 57
-                SGD = SGD*2
-                BankT = BankT + 5,000
-                print "You just won the Ten Day Bonus!"
-                BB()
-            else:
-                BankT = BankT / 99
-                print "You just lost the Ten Day Bonus."
-                BB()
+           if choice == "Accept":
+                chance = int(random.uniform(1,20))
+                if chance < 9:
+                    SGDowned == SGDowned + 57
+                    SGD = SGD*2
+                    BankT = BankT + 5,000
+                    print "You just won the Ten Day Bonus!"
+                    BB()
+                else:
+                  BankT = BankT / 99
+                  print "You just lost the Ten Day Bonus."
+                  BB()
       
     global HasLoan
-    global DaysToPayBackLoan
-                
+    global DaysToPayLoan
+    global LoanAmount        
 
     if HasLoan == 1:
-        DaysToPayBackLoan = DaysToPayBackLoan - 1
-        if DaysToPayBackLoan == 0:
+        DaysToPayLoan = DaysToPayLoan - 1
+        LoanAmount = LoanAmount * 12
+        LoanAmount = LoanAmount / 10
+        LoanAmount = int(LoanAmount)
+        if DaysToPayLoan != 0:
+            easygui.msgbox("Warning! You currently have a debt totaling " + str(LoanAmount) + " dollar(s)! You only have " + str(DaysToPayLoan) + " day(s) to pay back your debt!")
+        if DaysToPayLoan == 0:
+            easygui.msgbox("Warning! You ended the game with a debt totaling " + str(LoanAmount) + " dollars!")
+ 
             print "Game over! Unable to pay back loan! Save will be reset!"
-        with open('variables.py','w') as v:
-            #Eracicate old file:
-            v.seek(0)
-            v.truncate()
-        print "Warning! Game will now throw a 0 / 0 error. Please ignore this error and start program again."
-        print 0 / 0
+            with open('variables.py','w') as v:
+                #Eracicate old file:
+                v.seek(0)
+                v.truncate()
+            print "Warning! Game will now throw a 0 / 0 error. Please ignore this error and start program again."
+            print 0 / 0
     
 
     
@@ -472,10 +504,10 @@ def BankBalance():
     SGDn = SGD*SGDowned
     DAHJn = DAHJ*DAHJowned
     MFHGn = MFHG*MFHGowned
-    net = SGDn + DAHJn + MFHGn + BankT - BankD
+    net = SGDn + DAHJn + MFHGn + BankT - LoanAmount
     net2 = SGDn + DAHJn + MFHGn
     print "Current Balance is:", BankT
-    print "Currect Debt is:", BankD
+    print "Currect loan amount is:", LoanAmount
     print "Current Networth is:", net
     print "Current Stock Total:", net2
 """
@@ -513,12 +545,13 @@ def Save():
             v.seek(0)
             v.truncate()
             #Save variables as string
-            
+            global LoanAmount
             global HasLoan
             global DaysToPayLoan
 
+            LoanAmounts = "LoanAmount = " + str(LoanAmount)
             HasLoans = "HasLoan = " + str(HasLoan)
-            DaysToPayBackLoans = "DaysToPayLoan = " + str(DaysToPayLoan)
+            DaysToPayLoans = "DaysToPayLoan = " + str(DaysToPayLoan)
 
          
             global gold
@@ -634,7 +667,9 @@ def Save():
             v.write('\n')
             v.write(HasLoans)
             v.write('\n')
-            v.write(DaysToPayBackLoans)
+            v.write(DaysToPayLoans)
+            v.write('\n')
+            v.write(LoanAmounts)
 #***************************
 #Abbrievations
 #***************************
@@ -694,7 +729,7 @@ easygui.msgbox(intro, "Today's stock value's are:")
 #Main Loop of program
 while 1 == 1:
     choice1 = easygui.buttonbox("What would you like to do?",
-                                choices = ["Purchase stocks","Sell stocks","Advance","View Info","Save","Exit"])
+                                choices = ["Purchase stocks","Sell stocks","Advance","View Info","Save","Loan Options","Exit"])
     #Purchase Stocks
     
     if choice1 == "Purchase stocks":
@@ -892,7 +927,37 @@ while 1 == 1:
 
 
 
+    #Loan Options
+    if choice1 == "Loan Options":
+        choice2 = easygui.buttonbox("What would you like to do?",
+                                    choices = ["Take out loan","Pay back loan"])
+        if choice2 == "Take out loan":
+            if HasLoan == 0:
+                choice3 = easygui.enterbox("How much money would you like to take out of the bank?")
+                BankT = BankT + int(choice3)
+                LoanAmount = int(choice3) * 12
+                LoanAmount = int(LoanAmount) / 10
+                LoanAmount = int(LoanAmount)
+                HasLoan = 1
+                easygui.msgbox("You now owe " + str(LoanAmount) + " dollars!")
+            if HasLoan == 1:
+                easygui.msgbox("You already owe " + str(LoanAmount) + " dollars!")
 
+        if choice2 == "Pay back loan":
+            if HasLoan == 0:
+                easygui.msgbox("You do not currently have a loan!")
+            if HasLoan == 1:
+                Back = easygui.enterbox("How much money would you like to pay back? You currently owe " + str(LoanAmount) + " dollars!")
+                LoanAmount = LoanAmount - int(Back)
+                BankT = BankT - int(Back)
+                if LoanAmount == 0:
+                    DaysToPayLoan = 5
+                    HasLoan = 0
+                    LoanAmount = 0
+                    easygui.msgbox("All debts settled!")
+                
+                               
+                
 
     
     #Exit
