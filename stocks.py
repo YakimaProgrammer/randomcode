@@ -16,14 +16,44 @@ import_save = easygui.buttonbox("A save file has been detected. Would you like t
                                 choices = ["Load", "Reset"])
 if import_save == "Load":
 
-    
+    #Allows multiple save files. In earlier versions you could only have one named "variables.py".
     savegame = easygui.enterbox("Please enter the savegame you would like to use:")
 
     
     
     
-    load = importlib.import_module(savegame, "*")
-    
+    load = importlib.import_module(savegame, package=None)
+    #Converts variables from savegame file to local variables.
+    savegame = load.savegame
+    gameisreset = load.gameisreset
+    BankT = load.BankT
+    BankD = load.BankD
+    SGD = load.SGD
+    DAHJ = load.DAHJ
+    MFHG = load.MFHG
+    SGDowned = load.SGDowned
+    DAHJowned = load.DAHJowned
+    MFHGowned = load.MFHGowned
+    SGDy = load.SGDy
+    MFHGy = load.MFHGy
+    DAHJy = load.DAHJy
+    days = load.days
+    daystobonus = load.daystobonus
+    gamemode = load.gamemode
+    rEseta = load.rEseta
+    rEsetb = load.rEsetb
+    rEsetc = load.rEsetc
+    rEsetd = load.rEsetd
+    rEsete = load.rEsete
+    rEsetf = load.rEsetf
+    gold = load.gold
+    silver = load.silver
+    platinum = load.platinum
+    unobtainium = load.unobtainium
+    oil = load.oil
+    HasLoan = load.HasLoan
+    DaysToPayLoan = load.DaysToPayLoan
+    LoanAmount = load.LoanAmount
     
 else:
     savegame = easygui.enterbox("Please enter the savegame name you would like to use:")
@@ -421,7 +451,7 @@ def sellSGD(shares):
     global SGD
     global BankT
     global SGDowned
-    soldC = SGDowned*shares
+    soldC = SGD*shares
     if shares <= SGDowned:
         SGDowned = SGDowned - shares
         BankT = BankT + soldC
@@ -439,7 +469,7 @@ def sellDAHJ(shares):
     global DAHJ
     global BankT
     global DAHJowned
-    soldC = DAHJowned*shares
+    soldC = DAHJ*shares
     if shares <= DAHJowned:
         DAHJowned = DAHJowned - shares
         BankT = BankT + soldC
@@ -457,7 +487,7 @@ def sellMFHG(shares):
     global MFHG
     global BankT
     global MFHGowned
-    soldC = MFHGowned*shares
+    soldC = MFHG*shares
     if shares <= MFHGowned:
         MFHGowned = MFHGowned - shares
         BankT = BankT + soldC
@@ -896,7 +926,7 @@ while 1 == 1:
     #Save
     if choice1 == "Save":
         choice2 = easygui.buttonbox("How would you like to save?",
-                    choices = ['Write to file','Clear Save'])
+                    choices = ['Write to file','Copy Save','Clear Save'])
 
         if choice2 == "Write to file":
             S()
@@ -906,80 +936,16 @@ while 1 == 1:
                     #Eracicate old file:
                     v.seek(0)
                     v.truncate()
+        if choice2 == "Copy Save":
+            choice3 = easygui.enterbox("What would you like the new save file to be called?")
+            new = importlib.import_module(savegame, package=None)
+            choice3 = str(choice3) + ".py"
             
-    """
-    if choice1 == "Save":
-        with open('variables.py','w') as v:
-            #Eracicate old file:
-            v.seek(0)
-            v.truncate()
-            #Save variables as string
-            BankTs = "BankT = " + str(BankT)
-            BankDs = "BankD = " + str(BankD)
-            SGDs = "SGD = " + str(SGD)
-            DAHJs = "DAHJ = " + str(DAHJ)
-            MFHGs = "MFHG = " + str(MFHG)
-
-            SGDowneds = "SGDowned = " + str(SGDowned)
-            DAHJowneds = "DAHJowned = " + str(DAHJowned)
-            MFHGowneds = "MFHGowned = " + str(MFHGowned)
-
-            SGDys = "SGDy = " + str(SGDy)
-            DAHJys = "DAHJy = " + str(DAHJy)
-            MFHGys = "MFHGy = " + str(MFHGy)
-
-            SGDas = "SGDa = " + str(SGDa)
-            DAHJas = "DAHJa = " + str(DAHJa)
-            MFHGas = "MFHGa = " + str(MFHGa)
-
-            dayss = "days = " + str(days)
-            daystobonuss = "daystobonus = " + str(daystobonus)
-            #Save stringed variables
-            v.write(BankTs)
-            v.write('\n')
-            v.write(BankDs)
-            v.write('\n')
-            v.write(SGDs)
-            v.write('\n')
-            v.write(DAHJs)
-            v.write('\n')
-            v.write(MFHGs)
-            v.write('\n')
-            v.write(SGDowneds)
-            v.write('\n')
-            v.write(DAHJowneds)
-            v.write('\n')
-            v.write(MFHGowneds)
-            v.write('\n')
-            v.write(SGDys)
-            v.write('\n')
-            v.write(DAHJys)
-            v.write('\n')
-            v.write(MFHGys)
-            v.write('\n')
-            v.write(SGDas)
-            v.write('\n')
-            v.write(DAHJas)
-            v.write('\n')
-            v.write(MFHGas)
-            v.write('\n')
-            v.write(dayss)
-            v.write('\n')
-            v.write(daystobonuss)
-
-
-            """
-           
+            with open(choice3,"w") as c:
+                c.write(new)
+            easygui.msgbox("New file created as " + str(choice3))
             
-        
-
-
-
-
-
-
-
-
+    
     #Loan Options
     if choice1 == "Loan Options":
         choice2 = easygui.buttonbox("What would you like to do?",
@@ -1014,21 +980,23 @@ while 1 == 1:
 
     
     #Exit
-
+    
     if choice1 == "Exit":
         choice2 = easygui.buttonbox("How would you like to exit?",
                                     choices = ["Exit without saving", "Exit and save", "No exit"])
-        if choice2 == "Exit without saving":
-            choice3 = easygui.buttonbox("Are you sure?\nThis action will clear the save file!",
+
+        if choice2 == "Exit and save":
+            choice3 = easygui.buttonbox("Exit without saving.",
                                         choices = ["Yes","No"])
+
             if choice3 == "Yes":
-                with open('variables.py','w') as v:
+                with open(savegame,'w') as v:
                     #Eracicate old file:
                     v.seek(0)
                     v.truncate()
                 print "Game exited!"
                 break
-                                    
+                           
         if choice2 == "Exit and save":
             choice3 = easygui.buttonbox("Are you sure?",
                                         choices = ["Yes","No"])
