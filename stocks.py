@@ -36,7 +36,7 @@ def startup():
 
 
     gamemode = easygui.choicebox("Chose your game difficulty:\nEasy: Stock prices stay above 15 dollars. Bank Balance can't fall below 1 dollar.\nNormal: If stock crashes you get 15 multiplied by the number of shares added to your bank account.\nHard:If a stock crashes, there is no insurance!\nUltrahard: Each advance costs 500 dollars. If a stock crashes, shares * stock avaerage will be subtracted from your bank account.\nImpossable: Each advance costs 2,000 dollars. If a stock crashes: 5[shares*(5*stock average)] subtracted from bank account. Stock transactions have a 200 commission fee. And finally, stock prices can't exceed 50 dollars. If they do, their stock price goes back to 5 dollars.",
-                                 choices = ["Easy","Normal","Hard","Ultrahard","Impossable"])
+                                 choices = ["Easy","Normal","Hard","Ultrahard","Impossible"])
 
 import_save = easygui.buttonbox("A save file may have been detected. Would you like to import it, or reset game progress? If no save file is present, the game will crash! To fix this click reset and in the main menu, select save.",
                                 choices = ["Load", "Reset"])
