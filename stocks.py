@@ -1,4 +1,5 @@
-import random, sys, pickle, os, easygui
+import random, sys, easygui, pickle, pygame
+from os import path as os
 print "Welcome to Python Stock Game 2!"
 BankT = 10000
 ##BankT_init = BankT
@@ -9,21 +10,12 @@ stock_split_limit = 220 #Dictates at what value stocks split
 ##Commission does not apply to stock advise! 
 commision_type = "fee"
 commision_amount = 10
-
-#c, short for currancy, returns an number with 2 decimal places.
-def c(number):
-    number = float(number)
-    number += 0.005
-    number = "%.2f" %number
-    return float(number)
-
 ##Setting the stock class. This handles everything about stocks.
 class stock:
     def __init__(self, minvalue, maxvalue, name, daily_change, dividend_amount =
                  [0.02,0.02,0.01,0.01,0.01,0.02,0.04,0.02,0.05,0.005,0.005,0.005,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
                  dividend_delay = [8,18], dividend_cycle = 21): #daily_change is a list with two values
-        self.value = random.randint(minvalue*100, maxvalue*100)
-        self.value = c(c(self.value)/100)
+        self.value = random.randint(minvalue, maxvalue)
         self.shares_owned = 0
         self.name = name
         self.change = daily_change
@@ -89,20 +81,15 @@ class stock:
     def advance(self):
         global stock_split_limit
         self.past_prices.append(self.get_current_value())
-        new = random.randint(self.change[0]*100,self.change[1]*100)
-        new = c(new)
-        new = new/100
-        new = c(new)
+        new = random.randint(self.change[0],self.change[1])
         self.value += new
         if self.value > stock_split_limit:
             newvalue = random.randint(20,30)
             self.value = self.value / newvalue
             self.shares_owned = self.shares_owned * newvalue
-            self.value = c(self.value)
             print str(self.name) + " has split! The new value is " + str(self.value) + " dollars. You now own " + str(self.shares_owned) + " shares!"
             easygui.msgbox(str(self.name) + " has split! The new value is " + str(self.value) + " dollars. You now own " + str(self.shares_owned) + " shares!","A stock has split!")
         self.dividend()
-
 ##    def restore(self, SH,V,N,C,PP):
 ##        self.shares_owned = SH
 ##        self.value = V
@@ -130,13 +117,13 @@ class stock:
             for i in av_list:
                 average += i
             average = average / list_len
-            return c(average)
+            return average
     def get_recommendations(self):
         global day_count, BankT
         ra = self.get_recent_average()
         a = self.get_average()
         MSG = "Advise for " + str(self.name) + ".\n\n"
-        MSG = MSG + "The stock peaked at "+ str(c(self.get_peak())) + " dollars.\n\n"
+        MSG = MSG + "The stock peaked at "+ str(self.get_peak()) + " dollars.\n\n"
         if ra > a:
             MSG = MSG + "Because " + str(self.name) + " is recently above the typical average, now could be a good time to sell.\n\n"
         else:
@@ -146,19 +133,19 @@ class stock:
         if day_count <= 3 and self.value <= 20:
             MSG = MSG + "Also to consider, because of the low price and early nature of the stock, an investment may be wise.\n\n"
         if self.value - ra > 0:
-            MSG = MSG + "Further more, the stock is currently " + str(c(self.value - ra)) + " dollars above the recent average. This may be a good time to look at a short-term sell off for a profit.\n\n"
+            MSG = MSG + "Further more, the stock is currently " + str(self.value - ra) + " dollars above the recent average. This may be a good time to look at a short-term sell off for a profit.\n\n"
         else:    
-            MSG = MSG + "Further more, the stock is currently " + str(c(self.value - ra)) + " dollars below the recent average. This may be a good time to look at a short-term investment for a profit.\n\n"
+            MSG = MSG + "Further more, the stock is currently " + str(self.value - ra) + " dollars below the recent average. This may be a good time to look at a short-term investment for a profit.\n\n"
         if self.value - a > 0:
-            MSG = MSG + "More over, the stock is currently " + str(c(self.value - a)) + " dollars above the average price. This suggests that a more long term departure from the stock may advisable. It may be beneficial to sell more shares in this stock.\n\n"
+            MSG = MSG + "More over, the stock is currently " + str(self.value - a) + " dollars above the average price. This suggests that a more long term departure from the stock may advisable. It may be beneficial to sell more shares in this stock.\n\n"
         else:
-            MSG = MSG + "More over, the stock is currently " + str(c(self.value - a)) + " dollars below the average price. This suggests that a more long term investment in the stock may advisable. It may be beneficial to buy more shares in this stock.\n\n"
+            MSG = MSG + "More over, the stock is currently " + str(self.value - a) + " dollars below the average price. This suggests that a more long term investment in the stock may advisable. It may be beneficial to buy more shares in this stock.\n\n"
         MSG += "Another thing to consider is the stock's dividend of " + str(abs(float(self.dividend_amount)*100)) + " percent. The stock is currently " + str(self.get_next_dividend()) + " days away from paying a dividend.\n\n"
         max_shares = BankT/self.value
         max_shares = int(max_shares)
         max_shares -= 1
-        MSG = MSG + "If you choose to completely invest in this stock, you could buy " + str(max_shares) + " shares. The estimated short-term return of this investment (excluding dividends) is " + str(c(max_shares*ra)) + " dollars. This is an estimated profit of " +str(c(abs(BankT-(max_shares*ra))))+" dollars. The estimated long-term return of this investment (excluding dividends) is " + str(c(abs(max_shares*a))) + " dollars. This is an estimated profit of " + str(BankT-(max_shares*a))+" dollars.\n\n"
-        MSG = MSG + "If you choose to sell the " + str(self.shares_owned) + " shares you own in this stock, the total revenue would be " + str(c(self.shares_owned * self.value)) + " dollars.\n\n"
+        MSG = MSG + "If you choose to completely invest in this stock, you could buy " + str(max_shares) + " shares. The estimated short-term return of this investment (excluding dividends) is " + str(max_shares*ra) + " dollars. This is an estimated profit of " +str(BankT-(max_shares*ra))+" dollars. The estimated long-term return of this investment (excluding dividends) is " + str(max_shares*a) + " dollars. This is an estimated profit of " + str(BankT-(max_shares*a))+" dollars.\n\n"
+        MSG = MSG + "If you choose to sell the " + str(self.shares_owned) + " shares you own in this stock, the total revenue would be " + str(self.shares_owned * self.value) + " dollars.\n\n"
         MSG = MSG + "You currently have " + str(self.shares_owned) + " shares of this stock.\n\n"
         return MSG                    
     def get_average(self):
@@ -166,7 +153,7 @@ class stock:
         for i in self.past_prices:
             average += i
         average = average / len(self.past_prices)
-        return c(average)
+        return average
 ##    def save(self):
 ##        return self.shares_owned, self.value, self.name, self.change, self.past_prices
 class tendaybonus:
@@ -229,7 +216,7 @@ def choose_tendaybonus(options):
 ##Loans
 class makeloan:
     def __init__(self, amount, rate = 1.1, days = 5, is_null = False):
-        self.amount = abs(c(amount))
+        self.amount = abs(int(amount))
         self.rate = rate #10% increase
         self.has_loan = True
         if is_null:
@@ -239,7 +226,7 @@ class makeloan:
     def check_for_loan(self):
         return self.has_loan
     def payback(self, amount):
-        amount = abs(c(amount))
+        amount = abs(int(amount))
         global BankT
         BankT -= amount
         self.amount -= amount
@@ -261,7 +248,7 @@ class makeloan:
                 self.rate += 1
             self.amount = self.amount * self.rate
             self.time_to_pay_loan -= 1
-            self.amount = c(self.amount)
+            self.amount = int(self.amount)
             if self.amount <= 0:
                 global BankT
                 self.null = True
@@ -296,7 +283,7 @@ def load(savegame):
 ##advance_cost = 500
 def advance():
     global day_count, BankT, tendaybonuslist, tendaybonus_counter, loan
-    BankT = c(BankT)
+    BankT = int(BankT)
     if loan.check_for_loan():    
         if loan.advance() == "User Defaulted":
             easygui.msgbox("You failed to pay back your loan, with an outstanding debt of " + str(loan.get_current_value()) + " dollars", "Failed to pay off loan")
@@ -603,7 +590,7 @@ def bonus_generator(amount, stocklist, amount_S_per_bonus = [3,5], num_shares = 
             money_to_lose = random.choice(money)
             risk = random.choice(risk_factor)
             msg = "Ten day bonus acquired!\n\n"
-            msg += "Chance of winning: " + str(100-int(risk)) + "%\n\n"
+            msg += "Risk: " + str(100-int(risk)) + "%\n\n"
             msg += "Money to win: " + str(money_to_win) + " dollars.\n\n"
             msg += "Stocks to win: "
             for i in stocks_to_win:
@@ -667,7 +654,7 @@ def generate_stocks(amount):
         stocklist_init.append(stock1)
         names.append(name_a)
     return stocklist_init
-gamemode_file = os.path.isfile("Gamemodes.py_gamemodes")
+gamemode_file = os.isfile("Gamemodes.py_gamemodes")
 if not gamemode_file:
     print "Generating preset gamemodes...\nA random generator is used to determine the names of some stocks and possible ten day bonuses. If you wish to reset the gamemodes, you can delete the Gamemodes.py_gamemodes file to regenerate the names and ten day bonuses. This will clear any custom gamemodes made.\nYou can also go to the updater client, under [More] and under [Settings], you can choose [Reset Python Stock Game 2 Gamemodes], which will automate this process.\nThe file generation can take a moment..."
     gamemodelist = []
@@ -1050,9 +1037,9 @@ while run:
                                     MSG = "You sold " + str(choice3) + " shares of " + str(i.get_name()) + " for " + str(info[1]) + " dollars, at " + str(i.get_current_value())+ " dollars a share, bringing the total shares owned to " + str(i.get_shares_owned()) + " and a new bank balance of " + str(BankT) + " dollars."
                                 else:
                                     if commision_type == "percent":
-                                        MSG = "You sold " + str(choice3) + " shares of " + str(i.get_name()) + " for " + str(info[1]) + " dollars, at " + str(i.get_current_value())+ " dollars a share, bringing the total shares owned to " + str(i.get_shares_owned()) + " and a new bank balance of " + str(BankT) + " dollars. A commission of " + str(c(choice3*i.get_current_value()*commision_amount)) + " dollars was included in this total"
+                                        MSG = "You sold " + str(choice3) + " shares of " + str(i.get_name()) + " for " + str(info[1]) + " dollars, at " + str(i.get_current_value())+ " dollars a share, bringing the total shares owned to " + str(i.get_shares_owned()) + " and a new bank balance of " + str(BankT) + " dollars. A commission of " + str(int(choice3*i.get_current_value()*commision_amount)) + " dollars was included in this total"
                                     else:
-                                        MSG = "You sold " + str(choice3) + " shares of " + str(i.get_name()) + " for " + str(info[1]) + " dollars, at " + str(i.get_current_value())+ " dollars a share, bringing the total shares owned to " + str(i.get_shares_owned()) + " and a new bank balance of " + str(BankT) + " dollars. A commission of " + str(c(commision_amount)) + " dollars was included in this total"
+                                        MSG = "You sold " + str(choice3) + " shares of " + str(i.get_name()) + " for " + str(info[1]) + " dollars, at " + str(i.get_current_value())+ " dollars a share, bringing the total shares owned to " + str(i.get_shares_owned()) + " and a new bank balance of " + str(BankT) + " dollars. A commission of " + str(int(commision_amount)) + " dollars was included in this total"
                                     easygui.msgbox(MSG, "Transaction recept")
                 if choice1 == "Advance":
     ##                "Out of Money!"
