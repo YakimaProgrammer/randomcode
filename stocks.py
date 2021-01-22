@@ -44,7 +44,7 @@ if import_save == "Load":
     
     from variables import *
 else:
-    #Gamemode is currently a placeholder for a later version
+    
     gamemode = easygui.buttonbox("Chose your game difficulty:\nEasy: Stock prices stay above 15 dollars. Bank Balance can't fall below 1 dollar.\nNormal: If stock crashes you get 15 multiplied by the number of shares added to your bank account.\nHard:If a stock crashes, there is no insurance!\nUltrahard: Each advance costs 500 dollars. If a stock crashes, shares * stock avaerage will be subtracted from your bank account.\nImpossable: Each advance costs 2,000 dollars. If a stock crashes: 5[shares*(5*stock average)] subtracted from bank account. Stock transactions have a 200 commission fee. And finally, stock prices can't exceed 50 dollars. If they do, their stock price goes back to 5 dollars.",
                                  choices = ["Easy","Normal","Hard","Ultrahard","Impossable"])
     print "Welcome to StockSimulator!"
@@ -172,7 +172,50 @@ def advance():
     DAHJa = DAHJy / days
     MFHGa = MFHGy / days
 
+    #Gamemode Implementation
+    if gamemode == "Easy":
+        if SGD < 15:
+            SGD = 15
+        if DAHJ < 15:
+            DAHJ = 15
+        if MFHG < 15:
+            MFHG = 15
+        if BankT == 0:
+            BankT = 1
 
+    if gamemode == "Normal":
+        if SGD == 0:
+            Sshares = SGDowned * 15
+            BankT = BankT + Sshares
+        if DAHJ == 0:
+            Sshares = DAHJowned * 15
+            BankT = BankT + Sshares
+        if MFHG == 0:
+            Sshares = MFHGowned * 15
+            BankT = BankT + Sshares
+
+    #if gamemode == "Hard":
+    #    Nothing Happens!
+
+    if gamemode == "Ultrahard":
+        BankT = BankT - 500
+
+        if SGD == 0:
+            if rEset == 0:
+                
+                Sshares = SGDowned * SGDa
+                BankT = BankT - Sshares
+                rEset = 1
+        if DAHJ == 0:
+            if rEset == 0:
+                Sshares = DAHJowned * DAHJa
+                BankT = BankT - Sshares
+                rEset = 1
+        if MFHG == 0:
+            if rEset = 0:
+                Sshares = MFHGowned * MFHGa
+                BankT = BankT - Sshares
+                rEset = 1
     print "================================================================================"
     print "Day", days
     print "The new stock value's are:","SGD:", SGD,"|","DAHJ:", DAHJ,"|","MFHG", MFHG
@@ -186,7 +229,14 @@ def advance():
             v.truncate()
         print "Warning! Game will now throw a 0 / 0 error. Please ignore this error and start program again."
         print 0 / 0
-      
+
+    
+        
+
+
+    
+    #Secondary Save!
+    S()    
     
 #purchase functions
 #SGDowned
@@ -383,6 +433,9 @@ def Save():
             v.seek(0)
             v.truncate()
             #Save variables as string
+
+            global gamemode
+            
             gameisresets = "gameisreset = " + str(gameisreset) 
             BankTs = "BankT = " + str(BankT)
             BankDs = "BankD = " + str(BankD)
@@ -405,7 +458,7 @@ def Save():
             dayss = "days = " + str(days)
             daystobonuss = "daystobonus = " + str(daystobonus)
 
-            gamemodes = "gamemode = " + str(gamemode)
+            gamemodes = "gamemode = " + str('"') + str(gamemode) + str('"')
             #Save stringed variables
             v.write(gameisresets)
             v.write('\n')
@@ -440,7 +493,7 @@ def Save():
             v.write(dayss)
             v.write('\n')
             v.write(daystobonuss)
-            v.write('\n#')
+            v.write('\n')
             v.write(gamemodes)
 
 #***************************
