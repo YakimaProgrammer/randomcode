@@ -218,6 +218,28 @@ def advance():
                   BankT = BankT / 99
                   print "You just lost the Ten Day Bonus."
                   easygui.msgbox("You lost the 10 day bonus!")
+
+    #Limits maximum stock value
+    global DAHJowned
+    global MFHGowned
+    if SGD > 220:
+        newvalue = random.randint(5,8)
+        SGD = SGD / newvalue
+        SGDowned = SGDowned * newvalue
+        print "SGD's stock split! You now own " + str(SGDowned) + " shares."
+
+    if DAHJ > 220:
+        newvalue = random.randint(5,8)
+        DAHJ = DAHJ / newvalue
+        DAHJowned = DAHJowned * newvalue
+        print "DAHJ's stock split! You now own " + str(DAHJowned) + " shares."
+
+    if MFHG > 220:
+        newvalue = random.randint(5,8)
+        MFHG = MFHG / newvalue
+        MFHGowned = MFHGowned * newvalue
+        print "MFHG's stock split! You now own " + str(DAHJowned) + " shares."
+    #
     global HasLoan
     global DaysToPayLoan
     global LoanAmount        
