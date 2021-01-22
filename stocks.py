@@ -2,57 +2,6 @@ import easygui
 from time import sleep
 import random
 
-def startup():
-    print "Welcome to StockSimulator!"
-    print "Starting..."
-    gameisreset = 0 #if reset it would be 1
-    print "Setting bank variables"
-    BankT = 10000
-    BankD = 0
-    print "Bank variables set!"
-    print "Adding Stocks"
-    SGD = random.randint(1, 50)
-    DAHJ = random.randint(20, 105)
-    MFHG = random.randint(1, 30)
-
-    gold = random.randint(1200, 5000)
-    silver = random.randint(10, 30)
-    platinum = random.randint(800, 1200)
-    unobtainium = random.randint(2300, 54902)
-    oil = random.randint(50, 130)
-    
-    
-    SGDowned = 0
-    DAHJowned = 0
-    MFHGowned = 0
-
-    rEseta = 0
-    rEsetb = 0
-    rEsetc = 0
-    rEsetd = 0
-    rEsete = 0
-    rEsetf = 0
-    
-    
-    print "Adding Game Bonus counter"
-    daystobonus = 10
-
-    print "Adding day counter!"
-    days = 1
-    print "Adding stock averages variables"
-
-    SGDy = SGD
-    DAHJy = DAHJ
-    MFHGy = MFHG
-
-    SGDa = SGDy / days
-    DAHJa = DAHJy / days
-    MFHGa = MFHGy / days
-
-
-    gamemode = easygui.choicebox("Chose your game difficulty:\nEasy: Stock prices stay above 15 dollars. Bank Balance can't fall below 1 dollar.\nNormal: If stock crashes you get 15 multiplied by the number of shares added to your bank account.\nHard:If a stock crashes, there is no insurance!\nUltrahard: Each advance costs 500 dollars. If a stock crashes, shares * stock avaerage will be subtracted from your bank account.\nImpossable: Each advance costs 2,000 dollars. If a stock crashes, 5(shares * stock avaerage) will be subtracted from your bank account. Stock transactions have a 200 commission fee. And finally, stock prices can't exceed 50 dollars. If they do, their stock price goes back to 5 dollars.",
-                                 choices = ["Easy","Normal","Hard","Ultrahard","Impossible"])
-
 import_save = easygui.buttonbox("A save file may have been detected. Would you like to import it, or reset game progress? If no save file is present, the game will crash! To fix this click reset and in the main menu, select save.",
                                 choices = ["Load", "Reset"])
 if import_save == "Load":
@@ -144,17 +93,19 @@ def advance():
     global rEsete
     global rEsetf
 
+    global gold
+    global silver
+    global platinum
+    global unobtainium
+    global oil
+    
     gold = random.randint(1200, 5000)
     silver = random.randint(10, 30)
     platinum = random.randint(800, 1200)
     unobtainium = random.randint(2300, 54902)
     oil = random.randint(50, 130)
     
-    global gold
-    global silver
-    global platinum
-    global unobtainium
-    global oil
+    
 
     goldm = random.randint(12, 500)
     silverm = random.randint(10, 300)
@@ -218,7 +169,7 @@ def advance():
                 BankT = BankT / 99
                 print "You just lost the Ten Day Bonus."
                 BB()
-        """
+      
     global HasLoan
     global DaysToPayBackLoan
                 
@@ -234,7 +185,6 @@ def advance():
         print "Warning! Game will now throw a 0 / 0 error. Please ignore this error and start program again."
         print 0 / 0
     
-        """
 
     
     global SGDa
@@ -563,14 +513,14 @@ def Save():
             v.seek(0)
             v.truncate()
             #Save variables as string
-            """
+            
             global HasLoan
-            global DaysToPayBackLoan
+            global DaysToPayLoan
 
             HasLoans = "HasLoan = " + str(HasLoan)
-            DaysToPayBackLoans = "DaysToPayBackLoan = " + str(DaysToPayBackLoan)
+            DaysToPayBackLoans = "DaysToPayLoan = " + str(DaysToPayLoan)
 
-            """
+         
             global gold
             global silver
             global platinum
@@ -682,9 +632,9 @@ def Save():
             v.write('\n')
             v.write(oils)
             v.write('\n')
-            #v.write(HasLoans)
-            #v.write('\n')
-            #v.write(DaysToPayBackLoans)
+            v.write(HasLoans)
+            v.write('\n')
+            v.write(DaysToPayBackLoans)
 #***************************
 #Abbrievations
 #***************************
@@ -854,13 +804,22 @@ while 1 == 1:
             easygui.msgbox("You can find a more in-depth discription of what the program is doing in the IDLE shell.","Behind the scenes","Next")
             easygui.msgbox("10 day bonus\n \nThe 10 day bonus is a randomly selected prize which are acquired every 10 in-game days. 10 day bonus have good rewards, but can also cause monotary downfalls. If a 10 day bonus goes in your favor, you will win amazing rewards, but if it doesn't, the consequences can be dire!. The better the reward the greater the risk!","10 day bonus","Next")
             easygui.msgbox("This game has saving functionality. You can save in multiple ways. First, on the main screen, you can select [save] to write all variables to the [ variables.py ]. second, you can select [Save and exit] to write all variables to [ variables.py ]. And third, you can advance, which saves by default.","Saving")
-
+   
     #Save
     if choice1 == "Save":
-        S()
-        easygui.msgbox("Saved game to [ variables.py ]")
+        choice2 = easygui.buttonbox("How would you like to save?",
+                    choices = ['Write to file','Clear Save'])
+
+        if choice2 == "Write to file":
+            S()
+            easygui.msgbox("Saved game to [ variables.py ]")
+        if choice2 == "Clear Save":
+             with open('variables.py','w') as v:
+                    #Eracicate old file:
+                    v.seek(0)
+                    v.truncate()
             
-        """
+    """
     if choice1 == "Save":
         with open('variables.py','w') as v:
             #Eracicate old file:
@@ -919,19 +878,28 @@ while 1 == 1:
             v.write(dayss)
             v.write('\n')
             v.write(daystobonuss)
-            
+
+
             """
+           
             
-            
-            
-            
-            
+        
+
+
+
+
+
+
+
+
+
+
     
     #Exit
 
     if choice1 == "Exit":
         choice2 = easygui.buttonbox("How would you like to exit?",
-                                    choices = ["Exit without saving", "Exit and save", "Clear Save", "No exit"])
+                                    choices = ["Exit without saving", "Exit and save", "No exit"])
         if choice2 == "Exit without saving":
             choice3 = easygui.buttonbox("Are you sure?\nThis action will clear the save file!",
                                         choices = ["Yes","No"])
