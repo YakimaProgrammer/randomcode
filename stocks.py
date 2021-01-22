@@ -15,10 +15,25 @@ def startup():
     DAHJ = random.randint(20, 105)
     MFHG = random.randint(1, 30)
 
+    gold = random.randint(1200, 5000)
+    silver = random.randint(10, 30)
+    platinum = random.randint(800, 1200)
+    unobtainium = random.randint(2300, 54902)
+    oil = random.randint(50, 130)
+    
+    
     SGDowned = 0
     DAHJowned = 0
     MFHGowned = 0
 
+    rEseta = 0
+    rEsetb = 0
+    rEsetc = 0
+    rEsetd = 0
+    rEsete = 0
+    rEsetf = 0
+    
+    
     print "Adding Game Bonus counter"
     daystobonus = 10
 
@@ -35,7 +50,7 @@ def startup():
     MFHGa = MFHGy / days
 
 
-    gamemode = easygui.choicebox("Chose your game difficulty:\nEasy: Stock prices stay above 15 dollars. Bank Balance can't fall below 1 dollar.\nNormal: If stock crashes you get 15 multiplied by the number of shares added to your bank account.\nHard:If a stock crashes, there is no insurance!\nUltrahard: Each advance costs 500 dollars. If a stock crashes, shares * stock avaerage will be subtracted from your bank account.\nImpossable: Each advance costs 2,000 dollars. If a stock crashes: 5[shares*(5*stock average)] subtracted from bank account. Stock transactions have a 200 commission fee. And finally, stock prices can't exceed 50 dollars. If they do, their stock price goes back to 5 dollars.",
+    gamemode = easygui.choicebox("Chose your game difficulty:\nEasy: Stock prices stay above 15 dollars. Bank Balance can't fall below 1 dollar.\nNormal: If stock crashes you get 15 multiplied by the number of shares added to your bank account.\nHard:If a stock crashes, there is no insurance!\nUltrahard: Each advance costs 500 dollars. If a stock crashes, shares * stock avaerage will be subtracted from your bank account.\nImpossable: Each advance costs 2,000 dollars. If a stock crashes, 5(shares * stock avaerage) will be subtracted from your bank account. Stock transactions have a 200 commission fee. And finally, stock prices can't exceed 50 dollars. If they do, their stock price goes back to 5 dollars.",
                                  choices = ["Easy","Normal","Hard","Ultrahard","Impossible"])
 
 import_save = easygui.buttonbox("A save file may have been detected. Would you like to import it, or reset game progress? If no save file is present, the game will crash! To fix this click reset and in the main menu, select save.",
@@ -45,7 +60,7 @@ if import_save == "Load":
     from variables import *
 else:
     
-    gamemode = easygui.buttonbox("Chose your game difficulty:\nEasy: Stock prices stay above 15 dollars. Bank Balance can't fall below 1 dollar.\nNormal: If stock crashes you get 15 multiplied by the number of shares added to your bank account.\nHard:If a stock crashes, there is no insurance!\nUltrahard: Each advance costs 500 dollars. If a stock crashes, shares * stock avaerage will be subtracted from your bank account.\nImpossable: Each advance costs 2,000 dollars. If a stock crashes: 5[shares*(5*stock average)] subtracted from bank account. Stock transactions have a 200 commission fee. And finally, stock prices can't exceed 50 dollars. If they do, their stock price goes back to 5 dollars.",
+    gamemode = easygui.buttonbox("Chose your game difficulty:\nEasy: Stock prices stay above 15 dollars. Bank Balance can't fall below 1 dollar.\nNormal: If stock crashes you get 15 multiplied by the number of shares added to your bank account.\nHard:If a stock crashes, there is no insurance!\nUltrahard: Each advance costs 500 dollars. If a stock crashes, shares * stock avaerage will be subtracted from your bank account.\nImpossable: Each advance costs 2,000 dollars. If a stock crashes, 5(shares * stock avaerage) will be subtracted from your bank account. Stock transactions have a 200 commission fee. And finally, stock prices can't exceed 50 dollars. If they do, their stock price goes back to 5 dollars.",
                                  choices = ["Easy","Normal","Hard","Ultrahard","Impossable"])
     print "Welcome to StockSimulator!"
     print "Starting..."
@@ -53,16 +68,33 @@ else:
     print "Setting bank variables"
     BankT = 10000
     BankD = 0
+    HasLoan = 0
+    DaysToPayLoan = 5
     print "Bank variables set!"
     print "Adding Stocks"
     SGD = random.randint(1, 50)
     DAHJ = random.randint(20, 105)
     MFHG = random.randint(1, 30)
 
+    gold = random.randint(1200, 5000)
+    silver = random.randint(10, 30)
+    platinum = random.randint(800, 1200)
+    unobtainium = random.randint(2300, 54902)
+    oil = random.randint(50, 130)
+    
     SGDowned = 0
     DAHJowned = 0
     MFHGowned = 0
 
+    
+
+    rEseta = 0
+    rEsetb = 0
+    rEsetc = 0
+    rEsetd = 0
+    rEsete = 0
+    rEsetf = 0
+    
     print "Adding Game Bonus counter"
     daystobonus = 10
 
@@ -104,6 +136,31 @@ def advance():
 
     #Save first!
     S()
+
+    global rEseta
+    global rEsetb
+    global rEsetc
+    global rEsetd
+    global rEsete
+    global rEsetf
+
+    gold = random.randint(1200, 5000)
+    silver = random.randint(10, 30)
+    platinum = random.randint(800, 1200)
+    unobtainium = random.randint(2300, 54902)
+    oil = random.randint(50, 130)
+    
+    global gold
+    global silver
+    global platinum
+    global unobtainium
+    global oil
+
+    goldm = random.randint(12, 500)
+    silverm = random.randint(10, 300)
+    platinumm = random.randint(80, 120)
+    unobtainiumm = random.randint(23, 549)
+    oilm = random.randint(50, 130)
     
     global BankT
     global days
@@ -117,11 +174,24 @@ def advance():
     SGD = SGD*SGDm
     DAHJ = DAHJ*DAHJm
     MFHG = MFHG*MFHGm
+
+    gold = gold * goldm
+    silver = silver * silverm
+    platinum = platinum * platinumm
+    unobtainium = unobtainium * unobtainiumm
+    oil = oil * oilm
+
     
     SGD = SGD/100
     DAHJ = DAHJ/100
     MFHG = MFHG/100
 
+    gold = gold/100
+    silver = silver/100
+    platinum = platinum/100
+    unobtainium = unobtainium/100
+    oil = oil/100
+    
     global daystobonus
     daystobonus = daystobonus - 1
 
@@ -148,12 +218,23 @@ def advance():
                 BankT = BankT / 99
                 print "You just lost the Ten Day Bonus."
                 BB()
-        
-            
+        """
+    global HasLoan
+    global DaysToPayBackLoan
                 
 
-
-
+    if HasLoan == 1:
+        DaysToPayBackLoan = DaysToPayBackLoan - 1
+        if DaysToPayBackLoan == 0:
+            print "Game over! Unable to pay back loan! Save will be reset!"
+        with open('variables.py','w') as v:
+            #Eracicate old file:
+            v.seek(0)
+            v.truncate()
+        print "Warning! Game will now throw a 0 / 0 error. Please ignore this error and start program again."
+        print 0 / 0
+    
+        """
 
     
     global SGDa
@@ -185,15 +266,23 @@ def advance():
 
     if gamemode == "Normal":
         if SGD == 0:
-            Sshares = SGDowned * 15
-            BankT = BankT + Sshares
+            if rEsetd == 0:
+                
+                Sshares = SGDowned * 15
+                BankT = BankT + Sshares
+                rEsetd = 0
         if DAHJ == 0:
-            Sshares = DAHJowned * 15
-            BankT = BankT + Sshares
+            if rEsete == 0:
+                
+                Sshares = DAHJowned * 15
+                BankT = BankT + Sshares
+                rEsete = 0
         if MFHG == 0:
-            Sshares = MFHGowned * 15
-            BankT = BankT + Sshares
-
+            if rEsetf == 0:
+                
+                Sshares = MFHGowned * 15
+                BankT = BankT + Sshares
+                rEsetf = 0
     #if gamemode == "Hard":
     #    Nothing Happens!
 
@@ -201,21 +290,31 @@ def advance():
         BankT = BankT - 500
 
         if SGD == 0:
-            if rEset == 0:
+            if rEseta == 0:
                 
                 Sshares = SGDowned * SGDa
                 BankT = BankT - Sshares
                 rEset = 1
         if DAHJ == 0:
-            if rEset == 0:
+            if rEsetb == 0:
                 Sshares = DAHJowned * DAHJa
                 BankT = BankT - Sshares
                 rEset = 1
         if MFHG == 0:
-            if rEset = 0:
+            if rEsetc == 0:
                 Sshares = MFHGowned * MFHGa
                 BankT = BankT - Sshares
                 rEset = 1
+
+    if gamemode == "Impossable":
+        BankT = BankT - 2000
+        
+        if SGD == 0:
+            if rEseta == 0:
+                Sshares = SGDowned * SGDa * 5
+                BankT = BankT - Sshares
+                rEset = 1
+                
     print "================================================================================"
     print "Day", days
     print "The new stock value's are:","SGD:", SGD,"|","DAHJ:", DAHJ,"|","MFHG", MFHG
@@ -258,8 +357,11 @@ def purchaseSGD(shares):
         if charge < BankT:
             BankT = BankT - charge
             SGDowned = SGDowned + shares
-        
-            print "Total shares of SGD is now:", SGDowned, "| Purchase fee was:", charge, "| Remaining Bank Balance:", BankT
+            if gamemode == "Impossable":
+                BankT = BankT - 200
+                print "Total shares of SGD is now:", SGDowned, "| Purchase fee was:", charge, "| An additional $200 commission fee was added to this sale!", "| Remaining Bank Balance:", BankT
+            else:
+                print "Total shares of SGD is now:", SGDowned, "| Purchase fee was:", charge, "| Remaining Bank Balance:", BankT
         else:
             print "Error occured purchasing stocks. The most likely cause was: Insuffiecent funds."
 
@@ -275,8 +377,12 @@ def purchaseDAHJ(shares):
     if charge < BankT:
         BankT = BankT - charge
         DAHJowned = DAHJowned + shares
-        
-        print "Total shares of DAHJ is now:", DAHJowned, "| Purchase fee was:", charge, "| Remaining Bank Balance:", BankT
+        if gamemode == "Impossable":
+                BankT = BankT - 200
+                print "Total shares of DAHJ is now:", DAHJowned, "| Purchase fee was:", charge, "| An additional $200 commission fee was added to this sale!", "| Remaining Bank Balance:", BankT
+        else:
+                
+             print "Total shares of DAHJ is now:", DAHJowned, "| Purchase fee was:", charge, "| Remaining Bank Balance:", BankT
     else:
         print "Error occured purchasing stocks. The most likely cause was: Insuffiecent funds."
 #MFHG purchase function
@@ -288,8 +394,12 @@ def purchaseMFHG(shares):
     if charge < BankT:
         BankT = BankT - charge
         MFHGowned = MFHGowned + shares
-        
-        print "Total shares of MFHG is now:", MFHGowned, "| Purchase fee was:", charge, "| Remaining Bank Balance:", BankT
+        if gamemode == "Impossable":
+                BankT = BankT - 200
+                print "Total shares of MFHG is now:", MFHGowned, "| Purchase fee was:", charge, "| An additional $200 commission fee was added to this sale!", "| Remaining Bank Balance:", BankT
+        else:
+                
+            print "Total shares of MFHG is now:", MFHGowned, "| Purchase fee was:", charge, "| Remaining Bank Balance:", BankT
     else:
         print "Error occured purchasing stocks. The most likely cause is: Insuffiecent funds."
 
@@ -303,8 +413,11 @@ def sellSGD(shares):
     if shares <= SGDowned:
         SGDowned = SGDowned - shares
         BankT = BankT + soldC
-        BankT = BankT - 10
-        print "Total shares of SGD is now:", SGDowned, "| You earned", soldC, "| New Bank Balance:", BankT
+        if gamemode == "Impossable":
+                BankT = BankT - 200
+                print "Total shares of MFHG is now:", SGDowned, "| You earned:", soldC, "| An additional $200 commission fee was added to this sale!", "| Remaining Bank Balance:", BankT
+        else:
+            print "Total shares of SGD is now:", SGDowned, "| You earned", soldC, "| New Bank Balance:", BankT
     else:
         print "Error occured selling stocks. The most likely cause was: Insuffiecent amount of stocks."
 
@@ -318,8 +431,11 @@ def sellDAHJ(shares):
     if shares <= DAHJowned:
         DAHJowned = DAHJowned - shares
         BankT = BankT + soldC
-        BankT = BankT - 10
-        print "Total shares of DAHJ is now:", DAHJowned, "| You earned", soldC, "| New Bank Balance:", BankT
+        if gamemode == "Impossable":
+                BankT = BankT - 200
+                print "Total shares of DAHJ is now:", DAHJowned, "| You earned:", soldC, "| An additional $200 commission fee was added to this sale!", "| Remaining Bank Balance:", BankT
+        else:
+            print "Total shares of DAHJ is now:", DAHJowned, "| You earned", soldC, "| New Bank Balance:", BankT
     else:
         print "Error occured selling stocks. The most likely cause was: Insuffiecent amount of stocks."
 
@@ -333,8 +449,12 @@ def sellMFHG(shares):
     if shares <= MFHGowned:
         MFHGowned = MFHGowned - shares
         BankT = BankT + soldC
-        BankT = BankT - 10
-        print "Total shares of MFHG is now:", MFHGowned, "| You earned", soldC, "| New Bank Balance:", BankT
+        if gamemode == "Impossable":
+                BankT = BankT - 200
+                print "Total shares of MFHG is now:", MFHGowned, "| You earned:", soldC, "| An additional $200 commission fee was added to this sale!", "| Remaining Bank Balance:", BankT
+        else:
+            
+            print "Total shares of MFHG is now:", MFHGowned, "| You earned", soldC, "| New Bank Balance:", BankT
     else:
         print "Error occured selling stocks. The most likely cause was: Insuffiecent amount of stocks."
 
@@ -378,6 +498,16 @@ def DisplayStocks():
     
     print "Owned:", MFHGowned
 
+
+    print "================================================================================"
+    print "Miscellaneous stocks:"
+    print "These stocks cannot be purchased/sold like regular stocks! They can only be obtained through a ten day bonus!"
+    print "Currently the below stocks serve as placeholders and are not yet obtainable!"
+    print "Gold:", gold
+    print "Silver:", silver
+    print "Platinum:", platinum
+    print "Unobtainum:", unobtainium
+    print "Oil:", oil
 #***************************
 #BankBalance
 #***************************
@@ -433,8 +563,40 @@ def Save():
             v.seek(0)
             v.truncate()
             #Save variables as string
+            """
+            global HasLoan
+            global DaysToPayBackLoan
 
+            HasLoans = "HasLoan = " + str(HasLoan)
+            DaysToPayBackLoans = "DaysToPayBackLoan = " + str(DaysToPayBackLoan)
+
+            """
+            global gold
+            global silver
+            global platinum
+            global unobtainium
+            global oil
+            golds = "gold = " + str(gold)
+            silvers = "silver = " + str(silver)
+            platinums = "platinum = " + str(platinum)
+            unobtainiums = "unobtainium = " + str(unobtainium)
+            oils = "oil = " + str(oil)
+            
             global gamemode
+
+            global rEseta
+            global rEsetb
+            global rEsetc
+            global rEsetd
+            global rEsete
+            global rEsetf
+
+            rEsetsa = "rEseta = " + str(rEseta)
+            rEsetsb = "rEsetb = " + str(rEsetb)
+            rEsetsc = "rEsetc = " + str(rEsetc)
+            rEsetsd = "rEsetd = " + str(rEsetd)
+            rEsetse = "rEsete = " + str(rEsete)
+            rEsetsf = "rEsetf = " + str(rEsetf)
             
             gameisresets = "gameisreset = " + str(gameisreset) 
             BankTs = "BankT = " + str(BankT)
@@ -496,6 +658,33 @@ def Save():
             v.write('\n')
             v.write(gamemodes)
 
+            v.write('\n')
+            v.write(rEsetsa)
+            v.write('\n')
+            v.write(rEsetsb)
+            v.write('\n')
+            v.write(rEsetsc)
+            v.write('\n')
+            v.write(rEsetsd)
+            v.write('\n')
+            v.write(rEsetse)
+            v.write('\n')
+            v.write(rEsetsf)
+
+            v.write('\n')
+            v.write(golds)
+            v.write('\n')
+            v.write(silvers)
+            v.write('\n')
+            v.write(platinums)
+            v.write('\n')
+            v.write(unobtainiums)
+            v.write('\n')
+            v.write(oils)
+            v.write('\n')
+            #v.write(HasLoans)
+            #v.write('\n')
+            #v.write(DaysToPayBackLoans)
 #***************************
 #Abbrievations
 #***************************
