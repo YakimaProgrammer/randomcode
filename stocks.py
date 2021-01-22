@@ -34,12 +34,19 @@ def startup():
     DAHJa = DAHJy / days
     MFHGa = MFHGy / days
 
+
+    gamemode = easygui.choicebox("Chose your game difficulty:\nEasy: Stock prices stay above 15 dollars. Bank Balance can't fall below 1 dollar.\nNormal: If stock crashes you get 15 multiplied by the number of shares added to your bank account.\nHard:If a stock crashes, there is no insurance!\nUltrahard: Each advance costs 500 dollars. If a stock crashes, shares * stock avaerage will be subtracted from your bank account.\nImpossable: Each advance costs 2,000 dollars. If a stock crashes: 5[shares*(5*stock average)] subtracted from bank account. Stock transactions have a 200 commission fee. And finally, stock prices can't exceed 50 dollars. If they do, their stock price goes back to 5 dollars.",
+                                 choices = ["Easy","Normal","Hard","Ultrahard","Impossable"])
+
 import_save = easygui.buttonbox("A save file may have been detected. Would you like to import it, or reset game progress? If no save file is present, the game will crash! To fix this click reset and in the main menu, select save.",
                                 choices = ["Load", "Reset"])
 if import_save == "Load":
     
     from variables import *
 else:
+    #Gamemode is currently a placeholder for a later version
+    gamemode = easygui.buttonbox("Chose your game difficulty:\nEasy: Stock prices stay above 15 dollars. Bank Balance can't fall below 1 dollar.\nNormal: If stock crashes you get 15 multiplied by the number of shares added to your bank account.\nHard:If a stock crashes, there is no insurance!\nUltrahard: Each advance costs 500 dollars. If a stock crashes, shares * stock avaerage will be subtracted from your bank account.\nImpossable: Each advance costs 2,000 dollars. If a stock crashes: 5[shares*(5*stock average)] subtracted from bank account. Stock transactions have a 200 commission fee. And finally, stock prices can't exceed 50 dollars. If they do, their stock price goes back to 5 dollars.",
+                                 choices = ["Easy","Normal","Hard","Ultrahard","Impossable"])
     print "Welcome to StockSimulator!"
     print "Starting..."
     gameisreset = 0 #if reset it would be 1
@@ -192,14 +199,23 @@ def purchaseSGD(shares):
     global SGD
     global BankT
     global SGDowned
-    charge = SGD*shares
-    if charge < BankT:
-        BankT = BankT - charge
-        SGDowned = SGDowned + shares
-        
-        print "Total shares of SGD is now:", SGDowned, "| Purchase fee was:", charge, "| Remaining Bank Balance:", BankT
+
+     #No sale of stock if price == 0
+    if SGD == 0:
+        easygui.msgbox("Company went out of business! Unable to compleate transaction!")
     else:
-        print "Error occured purchasing stocks. The most likely cause was: Insuffiecent funds."
+        charge = SGD*shares
+        if charge < BankT:
+            BankT = BankT - charge
+            SGDowned = SGDowned + shares
+        
+            print "Total shares of SGD is now:", SGDowned, "| Purchase fee was:", charge, "| Remaining Bank Balance:", BankT
+        else:
+            print "Error occured purchasing stocks. The most likely cause was: Insuffiecent funds."
+
+   
+        
+
 #DAHJ purchase function
 def purchaseDAHJ(shares):
     global DAHJ
@@ -234,7 +250,7 @@ def sellSGD(shares):
     global BankT
     global SGDowned
     soldC = SGDowned*shares
-    if shares < SGDowned:
+    if shares <= SGDowned:
         SGDowned = SGDowned - shares
         BankT = BankT + soldC
         BankT = BankT - 10
@@ -249,7 +265,7 @@ def sellDAHJ(shares):
     global BankT
     global DAHJowned
     soldC = DAHJowned*shares
-    if shares < DAHJowned:
+    if shares <= DAHJowned:
         DAHJowned = DAHJowned - shares
         BankT = BankT + soldC
         BankT = BankT - 10
@@ -264,7 +280,7 @@ def sellMFHG(shares):
     global BankT
     global MFHGowned
     soldC = MFHGowned*shares
-    if shares < MFHGowned:
+    if shares <= MFHGowned:
         MFHGowned = MFHGowned - shares
         BankT = BankT + soldC
         BankT = BankT - 10
@@ -388,6 +404,8 @@ def Save():
 
             dayss = "days = " + str(days)
             daystobonuss = "daystobonus = " + str(daystobonus)
+
+            gamemodes = "gamemode = " + str(gamemode)
             #Save stringed variables
             v.write(gameisresets)
             v.write('\n')
@@ -422,7 +440,8 @@ def Save():
             v.write(dayss)
             v.write('\n')
             v.write(daystobonuss)
-
+            v.write('\n')
+            v.write(gamemodes)
 
 #***************************
 #Abbrievations
@@ -476,7 +495,7 @@ print " "
 print "================================================================================"
 print "Day", days 
 intro = "SGD:", SGD,"|","DAHJ:", DAHJ,"|","MFHG:", MFHG
-easygui.msgbox("Welcome to Stock Simulator! In a moment, you will be presented with the day's stock prices. After that, you will get various options which will allow you to buy, sell, view, or otherwise interact with various aspects of this game.", "Welcome!")
+easygui.msgbox("Welcome to Stock Simulator! In a moment, you will be presented with the day's stock prices. After that, you will get various options which will allow you to buy, sell, view, or otherwise interact with various aspects of this game. You will start the game with 10,000 dollars to invest in stocks.", "Welcome!")
 easygui.msgbox("Warning! Hitting [OK] prematurely, such as, before entering values, for  can cause errors which will end the program and may make you lose your progress!","Warning!")
 easygui.msgbox(intro, "Today's stock value's are:")
 
@@ -488,48 +507,60 @@ while 1 == 1:
     
     if choice1 == "Purchase stocks":
         choice2 = easygui.buttonbox("Which stock would you like to purchase?",
-                                    choices = ["SGD", "DAHJ", "MFHG"])
+                                    choices = ["SGD", "DAHJ", "MFHG", "Back to main screen"])
         if choice2 == "SGD":
-            choice3 = easygui.enterbox("How many shares of SGD would you like to purchase?")
-            
-            charge = SGD*int(choice3)
-            if charge < BankT:
-                PS(int(choice3))
-                easygui.msgbox("Purchase Successful!", "Purchase Successful!")
+
+            if SGD == 0:
+                easygui.msgbox("Company went out of business! Unable to compleate transaction!")
             else:
-                easygui.msgbox("Unable to purchase stocks. The most likely cause is insufficent funds.", "Error!")
+                choice3 = easygui.enterbox("How many shares of SGD would you like to purchase?")
+            
+                charge = SGD*abs(int(choice3))
+                if charge < BankT:
+                    PS(abs(int(choice3)))
+                    easygui.msgbox("Purchase Successful!", "Purchase Successful!")
+                else:
+                    easygui.msgbox("Unable to purchase stocks. The most likely cause is insufficent funds.", "Error!")
 
                
         if choice2 == "DAHJ":
-            choice3 = easygui.enterbox("How many shares of DAHJ would you like to purchase?")
-            
-            charge = DAHJ*int(choice3)
-            if charge < BankT:
-                PD(int(choice3))
-                easygui.msgbox("Purchase Successful!", "Purchase Successful!")
+
+            if DAHJ == 0:
+                easygui.msgbox("Company went out of business! Unable to compleate transaction!")
             else:
-                easygui.msgbox("Unable to purchase stocks. The most likely cause is insufficent funds.", "Error!")
+                choice3 = easygui.enterbox("How many shares of DAHJ would you like to purchase?")
+            
+                charge = DAHJ*abs(int(choice3))
+                if charge < BankT:
+                    PD(abs((int(choice3))))
+                    easygui.msgbox("Purchase Successful!", "Purchase Successful!")
+                else:
+                    easygui.msgbox("Unable to purchase stocks. The most likely cause is insufficent funds.", "Error!")
 
         if choice2 == "MFHG":
-            choice3 = easygui.enterbox("How many shares of MFHG would you like to purchase?")
-            
-            charge = MFHG*int(choice3)
-            if charge < BankT:
-                PM(int(choice3))
-                easygui.msgbox("Purchase Successful!", "Purchase Successful!")
+
+            if MFHG == 0:
+                easygui.msgbox("Company went out of business! Unable to compleate transaction!")
             else:
-                easygui.msgbox("Unable to purchase stocks. The most likely cause is insufficent funds.", "Error!")
+                choice3 = easygui.enterbox("How many shares of MFHG would you like to purchase?")
+            
+                charge = MFHG*abs((int(choice3)))
+                if charge < BankT:
+                    PM(abs(int(choice3)))
+                    easygui.msgbox("Purchase Successful!", "Purchase Successful!")
+                else:
+                    easygui.msgbox("Unable to purchase stocks. The most likely cause is insufficent funds.", "Error!")
 
     #Sell stocks
                 
     if choice1 == "Sell stocks":
         choice2 = easygui.buttonbox("Which stock would you like to Sell?",
-                                    choices = ["SGD", "DAHJ", "MFHG"])
+                                    choices = ["SGD", "DAHJ", "MFHG", "Back to main screen"])
         if choice2 == "SGD":
             choice3 = easygui.enterbox("How many shares of SGD would you like to sell?")
 
-            if int(choice3) < SGDowned:
-                SS(int(choice3))
+            if abs(int(choice3)) >= SGDowned:
+                SS(abs(int(choice3)))
                 easygui.msgbox("Sale Successful!", "Sale Successful!")
             else:
                 easygui.msgbox("Unable to sell stocks. The most likely cause is insufficent shares.", "Error!")
@@ -537,8 +568,8 @@ while 1 == 1:
         if choice2 == "DAHJ":
             choice3 = easygui.enterbox("How many shares of DAHJ would you like to sell?")
 
-            if int(choice3) < DAHJowned:
-                SD(int(choice3))
+            if abs(int(choice3)) >= DAHJowned:
+                SD(abs(int(choice3)))
                 easygui.msgbox("Sale Successful!", "Sale Successful!")
             else:
                 easygui.msgbox("Unable to sell stocks. The most likely cause is insufficent shares.", "Error!")
@@ -546,8 +577,8 @@ while 1 == 1:
         if choice2 == "MFHG":
             choice3 = easygui.enterbox("How many shares of MFHG would you like to sell?")
 
-            if int(choice3) < MFHGowned:
-                SM(int(choice3))
+            if abs(int(choice3)) >= MFHGowned:
+                SM(abs(int(choice3)))
                 easygui.msgbox("Sale Successful!", "Sale Successful!")
             else:
                 easygui.msgbox("Unable to sell stocks. The most likely cause is insufficent shares.", "Error!")
@@ -564,7 +595,7 @@ while 1 == 1:
         
     if choice1 == "View Info":
         choice2 = easygui.buttonbox("What would you like to view?",
-                                    choices = ["Stocks", "Bank balance", "Controls"])
+                                    choices = ["Stocks", "Bank balance", "Controls", "Back to main screen"])
         if choice2 == "Stocks":
             DS()
             easygui.msgbox("Stock information will now be displayed. In 10 seconds, the main window will reopen. (This window need to be closed in order for countdown to begin)", "Stock Information")
@@ -576,7 +607,7 @@ while 1 == 1:
             sleep(10)
 
         if choice2 == "Controls":
-            easygui.msgbox("Controls\n \nThis game has four main controls: Purchasing, Selling, Advancing, and displaying this list.\n \nPurchasing\n \nTo purchase a stock, select the [Purchase stock] button, select the stock you want to purchase and enter the number of stocks you want. Please note that entering an incorrect format, any besides numbers will crash the program. Additionally, enter only whole numbers; entering a number like 7.4 will only purchase 7 stocks.\n \nSelling\n \nSelling stocks works in a similar manner, select [Sell stocks], select the stock you want to sell. Additionally, enter only whole numbers; entering a number like 7.4 will only purchase 7 stocks.\n \nAdvancing\n \nTo move forward one day, select [Advance]. The new stock prices will display. You cannot undo a advance.\n \nDisplay controls\n \nTo find out more information on vaious things, like stocks and your bank balance, click on those catagories. The window will close and information will be displayed. After 10 seconds, the window will reopen and you can continue purchasing and selling stocks. Additionally, clicking on controls will display this list.","Controls","Next")
+            easygui.msgbox("Controls\n \nThis game has four main controls: Purchasing, Selling, Advancing, and displaying this list.\n \nPurchasing\n \nTo purchase a stock, select the [Purchase stock] button, select the stock you want to purchase and enter the number of stocks you want. Please note that entering an incorrect format, any besides numbers will crash the program. Additionally, enter only whole numbers; entering a number like 7.4 will only purchase 7 stocks. Also purchasing -13 shares of a stock will purchase the absolute value of that number of shares.\n \nSelling\n \nSelling stocks works in a similar manner, select [Sell stocks], select the stock you want to sell. Additionally, enter only whole numbers; entering a number like 7.4 will only purchase 7 stocks.\n \nAdvancing\n \nTo move forward one day, select [Advance]. The new stock prices will display. You cannot undo a advance.\n \nDisplay controls\n \nTo find out more information on vaious things, like stocks and your bank balance, click on those catagories. The window will close and information will be displayed. After 10 seconds, the window will reopen and you can continue purchasing and selling stocks. Additionally, clicking on controls will display this list.","Controls","Next")
             easygui.msgbox("There are currently 3 stocks available for purchasing. These stocks are:\n \nSGD\n \nDAHJ\n \nMFHG.\n \nMFHG and SGD are coded to have smaller variations in price whereas DAHJ will tend to have larger variations. This won't always be true, but it is typically present.","Stocks","Next")
             easygui.msgbox("You can find a more in-depth discription of what the program is doing in the IDLE shell.","Behind the scenes","Next")
             easygui.msgbox("10 day bonus\n \nThe 10 day bonus is a randomly selected prize which are acquired every 10 in-game days. 10 day bonus have good rewards, but can also cause monotary downfalls. If a 10 day bonus goes in your favor, you will win amazing rewards, but if it doesn't, the consequences can be dire!. The better the reward the greater the risk!","10 day bonus","Next")
