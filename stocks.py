@@ -1,10 +1,12 @@
-import easygui, os, importlib
+import easygui, os, importlib, sys, random
 from time import sleep
-import random
+#import random
 """
 global rapidsave
 rapidsave = 0
 """
+global end6
+end6 = 1
 global savegame
 savegame = "undefined"
 import_save = easygui.buttonbox("A save file has been detected. Would you like to import it, or start the game fresh?",
@@ -224,7 +226,7 @@ def advance():
                 #Eracicate old file:
                 v.seek(0)
                 v.truncate()
-            print "Warning! Game will now throw a 0 / 0 error. Please ignore this error and start program again."
+            end6 = 1
             print 0 / 0
     global SGDa
     global DAHJa
@@ -300,7 +302,7 @@ def advance():
             #Eracicate old file:
             v.seek(0)
             v.truncate()
-        print "Warning! Game will now throw a 0 / 0 error. Please ignore this error and start program again."
+        end6 = 1
         print 0 / 0
     #Secondary Save!
     S()    
@@ -611,7 +613,22 @@ def secret():
     global SGD
     global DAHJ
     global MFHG
-    choice = easygui.enterbox("You have entered the cheat code menu!")
+    global SGDy
+    global DAHJy
+    global MFHGy
+    global SGDy
+    global DAHJy
+    global MFHGy
+    global oil
+    global gold
+    global silver
+    global platinum
+    global unobtainium
+    global days
+    global SGDowned
+    global DAHJowned
+    global MFHGowned
+    choice = easygui.enterbox("You have entered the cheat code menu! Enter code below.")
     if choice == "86q!**":
         choice1 = easygui.enterbox("What is the new value for SGD?")
         SGD = int(choice1)
@@ -621,6 +638,40 @@ def secret():
     if choice == "56yu!@~":
         choice1 = easygui.enterbox("What is the new value for MFHG?")
         SGD = int(choice1)
+    if choice == "86hd":
+        choice1 = easygui.enterbox("You have activated a bot! How long do you want it to run?")
+        choice1 = int(choice1) + 1
+        BankTy = BankT
+        for i in range(1,choice1):
+            A()
+            if SGDy > int(SGD*1.18):
+                if SGD > 0:
+                    if BankT - SGD*5 > 0:
+                        PS(5)
+            if DAHJy > int(DAHJ*1.18):
+                if DAHJ > 0:
+                    if BankT - DAHJ*5 > 0:
+                        PD(5)
+            if MFHGy > int(MFHG*1.18):
+                if MFHG > 0:
+                    if BankT - MFHG*5 > 0:
+                        PM(5)
+            if SGD < int(SGDy*1.16):
+                if SGD >= 5:
+                    SS(5)
+            if DAHJ < int(DAHJy*1.16):
+                if SGD >= 5:
+                    SS(5)
+            if MFHG < int(MFHGy*1.16):
+                if MFHG >= 5:
+                    SM(5)
+            print "Your new Bank Balance is $"+ str(BankT) + ", from $"+ str(BankTy)
+        for i in range(1,SGDowned):
+            SS(1)
+        for i in range(1,DAHJowned):
+            SD(1)
+        for i in range(1,MFHGowned):
+            SM(1)
 #***************************
 #Abbrievations
 #***************************
@@ -655,7 +706,7 @@ print "=========================================================================
 print "Day", days 
 intro = "SGD:", SGD,"|","DAHJ:", DAHJ,"|","MFHG:", MFHG
 easygui.msgbox("Welcome to Stock Simulator! In a moment, you will be presented with the day's stock prices. After that, you will get various options which will allow you to buy, sell, view, or otherwise interact with various aspects of this game. You will start the game with 10,000 dollars to invest in stocks.", "Welcome!")
-easygui.msgbox("Warning! Hitting [OK] prematurely, such as, before entering values, for  can cause errors which will end the program and may make you lose your progress!","Warning!")
+#easygui.msgbox("Warning! Hitting [OK] prematurely, such as, before entering values, for  can cause errors which will end the program and may make you lose your progress!","Warning!")
 easygui.msgbox(intro, "Today's stock value's are:")
 S()
 #Main Loop of program
@@ -839,4 +890,7 @@ while 1 == 1:
                     print "Program ended! Restart program if you wish."
                     break 
     except:
-        easygui.msgbox("An unexpected error has occured. Please submit what you were doing when the error occured. Press enter or OK to resume gameplay.")
+        if end6 != 1:
+            easygui.msgbox("An unexpected error has occured. Please submit what you were doing when the error occured. Press enter or OK to resume gameplay.")
+        else:
+            sys.exit()
