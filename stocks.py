@@ -1,16 +1,37 @@
-import easygui
+import easygui, os, importlib
 from time import sleep
 import random
 
-import_save = easygui.buttonbox("A save file may have been detected. Would you like to import it, or reset game progress? If no save file is present, the game will crash! To fix this click reset and in the main menu, select save.",
+
+"""
+global rapidsave
+rapidsave = 0
+"""
+
+global savegame
+savegame = "undifined"
+
+
+import_save = easygui.buttonbox("A save file has been detected. Would you like to import it, or start the game fresh?",
                                 choices = ["Load", "Reset"])
 if import_save == "Load":
+
     
-    from variables import *
+    savegame = easygui.enterbox("Please enter the savegame you would like to use:")
+
+    
+    
+    
+    load = importlib.import_module(savegame, "*")
+    
+    
 else:
+    savegame = easygui.enterbox("Please enter the savegame name you would like to use:")
+    savegame = str(savegame) + ".py"
     
     gamemode = easygui.buttonbox("Chose your game difficulty:\nEasy: Stock prices stay above 15 dollars. Bank Balance can't fall below 1 dollar.\nNormal: If stock crashes you get 15 multiplied by the number of shares added to your bank account.\nHard:If a stock crashes, there is no insurance!\nUltrahard: Each advance costs 500 dollars. If a stock crashes, shares * stock avaerage will be subtracted from your bank account.\nImpossable: Each advance costs 2,000 dollars. If a stock crashes, 5(shares * stock avaerage) will be subtracted from your bank account. Stock transactions have a 200 commission fee. And finally, stock prices can't exceed 50 dollars. If they do, their stock price goes back to 5 dollars.",
                                  choices = ["Easy","Normal","Hard","Ultrahard","Impossable"])
+    
     print "Welcome to StockSimulator!"
     print "Starting..."
     gameisreset = 0 #if reset it would be 1
@@ -60,8 +81,7 @@ else:
     DAHJa = DAHJy / days
     MFHGa = MFHGy / days
 
-
-
+    
 
 #***************************
 #random.randint breaks if you use decimals
@@ -149,7 +169,7 @@ def advance():
     daystobonus = daystobonus - 1
 
     #Tests if Daystobonus is 0
-    daystobonus = 0
+    
     if daystobonus == 0:
         daystobonus = 10
         
@@ -552,11 +572,15 @@ def Controls ():
 """
 
 def Save():
-        with open('variables.py','w') as v:
+    #f = open('{0}.py'.format(savegame), 'wb')
+        with open(savegame, 'w') as v:
             #Eracicate old file:
             v.seek(0)
             v.truncate()
             #Save variables as string
+
+            savegames = "savegame = " + "'" + str(savegame) + "'"
+            
             global LoanAmount
             global HasLoan
             global DaysToPayLoan
@@ -617,6 +641,8 @@ def Save():
 
             gamemodes = "gamemode = " + str('"') + str(gamemode) + str('"')
             #Save stringed variables
+            v.write(savegames)
+            v.write('\n')
             v.write(gameisresets)
             v.write('\n')
             v.write(BankTs)
@@ -682,6 +708,19 @@ def Save():
             v.write(DaysToPayLoans)
             v.write('\n')
             v.write(LoanAmounts)
+"""
+        global rapidsave
+        SGD1 = SGD
+        rapidsave = rapidsave + 1
+        if rapidsave == 9:
+            rapidsave = 0
+            choice = easygui.enterbox("You have entered the cheat code interface! Enter your code below!")
+            if choice == "SGD Boost":
+                global SGD
+                SGD1 = int(easygui.enterbox("Enter the new value for SGD:"))
+                SGD = SGD1
+                
+ """           
 #***************************
 #Abbrievations
 #***************************
@@ -729,14 +768,16 @@ def C():
 print "Game start"
 print " "
 print "================================================================================"
-print " "
-#C()
-print "================================================================================"
+
 print "Day", days 
 intro = "SGD:", SGD,"|","DAHJ:", DAHJ,"|","MFHG:", MFHG
 easygui.msgbox("Welcome to Stock Simulator! In a moment, you will be presented with the day's stock prices. After that, you will get various options which will allow you to buy, sell, view, or otherwise interact with various aspects of this game. You will start the game with 10,000 dollars to invest in stocks.", "Welcome!")
 easygui.msgbox("Warning! Hitting [OK] prematurely, such as, before entering values, for  can cause errors which will end the program and may make you lose your progress!","Warning!")
 easygui.msgbox(intro, "Today's stock value's are:")
+
+
+S()
+
 
 #Main Loop of program
 while 1 == 1:
@@ -753,7 +794,7 @@ while 1 == 1:
                 easygui.msgbox("Company went out of business! Unable to compleate transaction!")
             else:
                 choice3 = easygui.enterbox("How many shares of SGD would you like to purchase?")
-            
+                
                 charge = SGD*abs(int(choice3))
                 if charge < BankT:
                     PS(abs(int(choice3)))
@@ -859,7 +900,7 @@ while 1 == 1:
 
         if choice2 == "Write to file":
             S()
-            easygui.msgbox("Saved game to [ variables.py ]")
+            easygui.msgbox("Saved game to [ " + str(savegame) + " ] ")
         if choice2 == "Clear Save":
              with open('variables.py','w') as v:
                     #Eracicate old file:
