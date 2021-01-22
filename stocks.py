@@ -440,7 +440,7 @@ def Save():
             v.write(dayss)
             v.write('\n')
             v.write(daystobonuss)
-            v.write('\n')
+            v.write('\n#')
             v.write(gamemodes)
 
 #***************************
@@ -559,7 +559,7 @@ while 1 == 1:
         if choice2 == "SGD":
             choice3 = easygui.enterbox("How many shares of SGD would you like to sell?")
 
-            if abs(int(choice3)) >= SGDowned:
+            if abs(int(choice3)) <= SGDowned:
                 SS(abs(int(choice3)))
                 easygui.msgbox("Sale Successful!", "Sale Successful!")
             else:
@@ -568,7 +568,7 @@ while 1 == 1:
         if choice2 == "DAHJ":
             choice3 = easygui.enterbox("How many shares of DAHJ would you like to sell?")
 
-            if abs(int(choice3)) >= DAHJowned:
+            if abs(int(choice3)) <= DAHJowned:
                 SD(abs(int(choice3)))
                 easygui.msgbox("Sale Successful!", "Sale Successful!")
             else:
@@ -577,7 +577,7 @@ while 1 == 1:
         if choice2 == "MFHG":
             choice3 = easygui.enterbox("How many shares of MFHG would you like to sell?")
 
-            if abs(int(choice3)) >= MFHGowned:
+            if abs(int(choice3)) <= MFHGowned:
                 SM(abs(int(choice3)))
                 easygui.msgbox("Sale Successful!", "Sale Successful!")
             else:
