@@ -1,0 +1,1 @@
+This is a snippet of code I edited for a friend. Seeing as I didn't know the exact parameters of what they were trying to do, I left a lot of the game logic untouched. However, I did switch over to an object-oriented approach.
